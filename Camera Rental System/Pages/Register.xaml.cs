@@ -27,14 +27,13 @@ namespace Camera_Rental_System.Pages
     /// </summary>
     public partial class Register : UserControl, IPage
     {
-        const int TrainingCount = 10;
+        const int TrainingCount = 1;
         public Register()
         {
             this.DataContext = this;
             InitializeComponent();
 
             detector = new AI.FaceDetector(ref WebcamControl);
-            detector.StartRecognizing();
             detector.FoundFace += FaceFound;
         }
 
@@ -65,6 +64,12 @@ namespace Camera_Rental_System.Pages
             await new AI.Checkpoint(faces, PersonName.Text).StartTraningAsync();
             PageChanged?.Invoke(this, new LoginPage());
 
+        }
+
+        private void StartCamera(object sender, RoutedEventArgs e)
+        {
+
+            detector.StartRecognizing();
         }
     }
 }

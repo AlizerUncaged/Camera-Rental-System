@@ -28,5 +28,16 @@
                 </Grid>
             </StackPanel>
         </StackPanel>
+        <materialDesign:DialogHost x:Name="SuccessDialog" IsOpen="false" CloseOnClickAway="False" d:IsHidden="True">
+            <materialDesign:DialogHost.DialogContent>
+                <Grid Margin="15" MinWidth="150">
+                    <StackPanel>
+                        <TextBlock x:Name="PersonName"  FontSize="16" FontFamily="{DynamicResource Riveruta}" Text="Logged In As:">
+
+                        </TextBlock>
+                   </StackPanel>
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
     </Grid>
 </UserControl>

@@ -16,13 +16,16 @@ namespace Camera_Rental_System.AI
         const int Threshold = 7000;
         private readonly List<Image<Bgr, byte>> mats;
         private readonly string dataFolder;
+        private const string facesFolder = "./Faces";
 
         public Checkpoint(List<Image<Bgr, byte>> mats, string name)
         {
             this.mats = mats;
-            this.dataFolder = $"./Faces/{name}";
 
-            if (!Directory.Exists(this.dataFolder)) Directory.CreateDirectory(this.dataFolder);
+            if (!Directory.Exists(facesFolder)) Directory.CreateDirectory(facesFolder);
+
+            this.dataFolder = Path.Combine(facesFolder, $"{name}.png");
+
         }
 
         public async Task<bool> StartTraningAsync() =>
@@ -31,17 +34,8 @@ namespace Camera_Rental_System.AI
              foreach (var image in mats)
              {
                  Image<Bgr, byte> sized = image.Resize(300, 300, Emgu.CV.CvEnum.Inter.Cubic);
-                 sized.Save(Path.Combine(dataFolder, $"{mats.IndexOf(image)}.png"));
+                 sized.Save(dataFolder);
              }
-             //var matCount = mats.Count();
-             //EigenFaceRecognizer recognizer = new EigenFaceRecognizer(matCount, Threshold);
-
-             //recognizer.Train(new VectorOfMat(mats.ToArray()),
-             //    new VectorOfInt(Enumerable.Range(1, matCount).ToArray()));
-
-             //foreach (var mat in mats)
-             //    mat.Save(Path.Combine(dataFolder, $"{mats.IndexOf(mat)}.png"));
-
              return true;
          });
 

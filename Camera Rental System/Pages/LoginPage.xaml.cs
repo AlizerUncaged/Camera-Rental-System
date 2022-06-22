@@ -32,9 +32,35 @@ namespace Camera_Rental_System.Pages
             detector.FoundFace += FaceFound;
         }
 
-        private void FaceFound(object sender, Image<Bgr, byte> e)
+        private async void FaceFound(object sender, Image<Bgr, byte> e)
         {
-            Image<Gray, byte> grayRes = e.Convert<Gray, byte>().Resize(300, 300, Emgu.CV.CvEnum.Inter.Cubic);
+            Image<Bgr, byte> sized = e.Resize(300, 300, Emgu.CV.CvEnum.Inter.Cubic);
+
+            var trainer = new AI.Training("./Faces");
+
+            try
+            {
+                await trainer.StartTraningAsync();
+            }
+            catch (Exception ex)
+            {
+                PersonName.Text = $"{ex.Message}";
+                SuccessDialog.IsOpen = true;
+                return;
+            }
+
+            var result = trainer.Predict(sized);
+
+            if (result.Label > -1)
+            {
+                detector.StopRecognizing();
+
+                PersonName.Dispatcher.Invoke(() =>
+                {
+                    PersonName.Text = $"Logged in as {trainer.LabelFromIndex(result.Label)}";
+                    SuccessDialog.IsOpen = true;
+                });
+            }
         }
 
 
