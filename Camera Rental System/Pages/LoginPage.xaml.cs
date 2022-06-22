@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Emgu.CV;
+using Emgu.CV.Structure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,11 +22,25 @@ namespace Camera_Rental_System.Pages
     /// </summary>
     public partial class LoginPage : UserControl, IPage
     {
+        private AI.FaceDetector detector;
         public LoginPage()
         {
             InitializeComponent();
+
+            detector = new AI.FaceDetector(ref WebcamControl);
+            detector.StartRecognizing();
+            detector.FoundFace += FaceFound;
         }
 
+        private void FaceFound(object sender, Image<Bgr, byte> e)
+        {
+            Image<Gray, byte> grayRes = e.Convert<Gray, byte>().Resize(300, 300, Emgu.CV.CvEnum.Inter.Cubic);
+        }
+
+
         public event EventHandler<IPage> PageChanged;
+
+        private void RegisterClicked(object sender, RoutedEventArgs e) =>
+            PageChanged?.Invoke(this, new Register());
     }
 }

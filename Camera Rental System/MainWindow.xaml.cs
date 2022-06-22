@@ -23,15 +23,17 @@ namespace Camera_Rental_System
         public MainWindow()
         {
             InitializeComponent();
-            SetPage(new Pages.LoginPage());
+            SetPage(new Pages.Register());
 
         }
         private void SetPage(Pages.IPage e)
         {
+            var incoming = e as UserControl;
             while (PageHandler.Children.Count >= 1)
                 PageHandler.Children.RemoveAt(0);
 
-            PageHandler.Children.Add(e as UserControl);
+            e.PageChanged += (s, k) => SetPage(k);
+            PageHandler.Children.Add(incoming);
         }
 
         private void Clicked(object sender, MouseButtonEventArgs e)
