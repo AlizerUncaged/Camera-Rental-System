@@ -28,14 +28,15 @@
                 </Grid>
             </StackPanel>
         </StackPanel>
-        <materialDesign:DialogHost x:Name="SuccessDialog" IsOpen="false" CloseOnClickAway="False" d:IsHidden="True">
+        <materialDesign:DialogHost x:Name="SuccessDialog" IsOpen="false" CloseOnClickAway="true" d:IsHidden="True">
             <materialDesign:DialogHost.DialogContent>
                 <Grid Margin="15" MinWidth="150">
                     <StackPanel>
-                        <TextBlock x:Name="PersonName"  FontSize="16" FontFamily="{DynamicResource Riveruta}" Text="Logged In As:">
+                        <TextBlock x:Name="PersonName"  FontSize="16" FontFamily="{DynamicResource Riveruta}" Text="Logged In As:" Margin="0,0,0,15">
 
                         </TextBlock>
-                   </StackPanel>
+                        <Button x:Name="RegisterInstead" Click="RegisterClicked" BorderBrush="{x:Null}" Background="#FFEBEBED" Foreground="#FF2B2B2B" Content="Register" FontWeight="Bold" FontFamily="{DynamicResource Riveruta}"/>
+                    </StackPanel>
                 </Grid>
             </materialDesign:DialogHost.DialogContent>
         </materialDesign:DialogHost>

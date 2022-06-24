@@ -34,7 +34,7 @@ namespace Camera_Rental_System.Pages
 
         private async void FaceFound(object sender, Image<Bgr, byte> e)
         {
-            Image<Bgr, byte> sized = e.Resize(300, 300, Emgu.CV.CvEnum.Inter.Cubic);
+            Image<Bgr, byte> sized = e.Resize(100, 100, Emgu.CV.CvEnum.Inter.Cubic);
 
             var trainer = new AI.Training("./Faces");
 
@@ -44,19 +44,26 @@ namespace Camera_Rental_System.Pages
             }
             catch (Exception ex)
             {
-                PersonName.Text = $"{ex.Message}";
-                SuccessDialog.IsOpen = true;
+                PersonName.Dispatcher.Invoke(() =>
+                {
+                    PersonName.Text = $"{ex.Message}";
+                    SuccessDialog.IsOpen = true;
+                });
                 return;
             }
 
             var result = trainer.Predict(sized);
+            MessageBox.Show($"Label: {result.Label}, Distance: {result.Distance}");
 
             if (result.Label > -1)
             {
-                detector.StopRecognizing();
 
                 PersonName.Dispatcher.Invoke(() =>
                 {
+                    RegisterInstead.Content = "OK";
+                    RegisterInstead.Click -= RegisterClicked;
+                    RegisterInstead.Click += (p, o) => PageChanged?.Invoke(this, new HomeProducts());
+
                     PersonName.Text = $"Logged in as {trainer.LabelFromIndex(result.Label)}";
                     SuccessDialog.IsOpen = true;
                 });

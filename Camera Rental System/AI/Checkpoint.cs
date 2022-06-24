@@ -33,7 +33,7 @@ namespace Camera_Rental_System.AI
          {
              foreach (var image in mats)
              {
-                 Image<Bgr, byte> sized = image.Resize(300, 300, Emgu.CV.CvEnum.Inter.Cubic);
+                 Image<Bgr, byte> sized = image.Resize(100, 100, Emgu.CV.CvEnum.Inter.Cubic);
                  sized.Save(dataFolder);
              }
              return true;
