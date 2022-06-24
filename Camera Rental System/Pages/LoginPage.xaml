@@ -15,6 +15,7 @@
         TextElement.FontFamily="{DynamicResource Riveruta}" MaxWidth="200" Margin="0,0,25,0" VerticalAlignment="Center">
                 <TextBlock Text="Login" FontFamily="{DynamicResource Bunya Bold}" FontSize="40" FontWeight="Bold"/>
                 <TextBlock Text="Please look at the camera, remove any glasses and cosmetics." FontSize="16" TextWrapping="Wrap" Margin="0,0,0,15" Opacity="0.75" FontWeight="Bold"/>
+                <TextBlock x:Name="NegativeResult" Text="Please position your face clearly." FontSize="16" TextWrapping="Wrap" Margin="0,0,0,15" Opacity="0.75" FontWeight="Bold" Foreground="#FFFF7D7D" Visibility="Collapsed"/>
                 <Button Click="RegisterClicked" Effect="{DynamicResource Shadow}" materialDesign:ButtonAssist.CornerRadius="7" materialDesign:ShadowAssist.ShadowDepth="Depth0" BorderBrush="{x:Null}" Background="#FF2B2B2B" Foreground="#FFEBEBEB" Content="Register Instead" Height="35" FontWeight="Bold"/>
             </StackPanel>
             <StackPanel>

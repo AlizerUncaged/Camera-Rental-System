@@ -46,10 +46,14 @@ namespace Camera_Rental_System.Pages
             {
                 RegisterDialog.Dispatcher.Invoke(() =>
                 {
+                    detector.StopRecognizing();
                     RegisterDialog.IsOpen = true;
                 });
             }
-            else faces.Add(e);
+            else
+            {
+                faces.Add(e);
+            }
         }
 
         private AI.FaceDetector detector;
@@ -61,6 +65,7 @@ namespace Camera_Rental_System.Pages
 
         private async void SetPersonName(object sender, RoutedEventArgs e)
         {
+            detector.StopRecognizing();
             await new AI.Checkpoint(faces, PersonName.Text).StartTraningAsync();
             PageChanged?.Invoke(this, new LoginPage());
 

@@ -64,7 +64,7 @@ namespace Camera_Rental_System.AI
                         Image<Bgr, byte> resultImage = currentFrame.Convert<Bgr, byte>();
                         resultImage.ROI = face;
 
-                        // CvInvoke.CvtColor(resultImage, resultImage, ColorConversion.Bgr2Gray);
+                        CvInvoke.CvtColor(resultImage, resultImage, ColorConversion.Bgr2Gray);
 
                         FoundFace?.Invoke(this, resultImage);
                     }

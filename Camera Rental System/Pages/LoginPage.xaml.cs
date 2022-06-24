@@ -40,7 +40,7 @@ namespace Camera_Rental_System.Pages
 
             try
             {
-                await trainer.StartTraningAsync();
+                trainer.StartTraning();
             }
             catch (Exception ex)
             {
@@ -53,11 +53,16 @@ namespace Camera_Rental_System.Pages
             }
 
             var result = trainer.Predict(sized);
-            MessageBox.Show($"Label: {result.Label}, Distance: {result.Distance}");
+            NegativeResult.Dispatcher.Invoke(() =>
+            {
+                NegativeResult.Visibility = Visibility.Visible;
+                NegativeResult.Text = $"Label: {result.Label}, Distance: {result.Distance}";
+            });
+
+            return;
 
             if (result.Label > -1)
             {
-
                 PersonName.Dispatcher.Invoke(() =>
                 {
                     RegisterInstead.Content = "OK";
@@ -67,6 +72,14 @@ namespace Camera_Rental_System.Pages
                     PersonName.Text = $"Logged in as {trainer.LabelFromIndex(result.Label)}";
                     SuccessDialog.IsOpen = true;
                 });
+            }
+            else
+            {
+                //
+                //    NegativeResult.Dispatcher.Invoke(() =>
+                //    {
+                //        NegativeResult.Visibility = Visibility.Visible;
+                //    });
             }
         }
 

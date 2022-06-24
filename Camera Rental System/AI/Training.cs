@@ -1,4 +1,5 @@
 ﻿using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Face;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
@@ -17,7 +18,7 @@ namespace Camera_Rental_System.AI
         private readonly string path;
         private EigenFaceRecognizer recognizer;
         List<string> fileNames = new List<string>();
-        private double threshold = 60000;
+        private double threshold = 10000;
         public Training(string path)
         {
             this.path = path;
@@ -28,15 +29,15 @@ namespace Camera_Rental_System.AI
             if (recognizer is null)
                 throw new InvalidOperationException("You haven't trained any images yet.");
 
-            var j = image.Convert<Gray, Byte>();
-           CvInvoke.EqualizeHist(j, j);
+            var j = image.Resize(100, 100, Emgu.CV.CvEnum.Inter.Cubic);
+            CvInvoke.EqualizeHist(j, j);
 
             return recognizer.Predict(j);
         }
 
         public string LabelFromIndex(int i) => fileNames[i];
 
-        public async Task StartTraningAsync()
+        public void StartTraning()
         {
 
             var files = Directory.GetFiles(path, "*.png", SearchOption.AllDirectories);
@@ -44,26 +45,21 @@ namespace Camera_Rental_System.AI
             if (!files.Any())
                 throw new InvalidOperationException("No faces registered yet.");
 
-            await Task.Run(() =>
+
+            VectorOfMat trainedMats = new VectorOfMat();
+            VectorOfInt labels = new VectorOfInt();
+            int i = 0;
+            foreach (var file in files)
             {
-                List<Mat> trainedMats = new List<Mat>();
+                trainedMats.Push(new Image<Gray, byte>(file).Mat);
+                fileNames.Add(Path.GetFileNameWithoutExtension(file));
+                labels.Push(new[] { i++ });
+            }
 
-                foreach (var file in files)
-                {
-                    Mat j = new Mat(file);
-                    trainedMats.Add(j);
-                    fileNames.Add(Path.GetFileNameWithoutExtension(file));
-                }
+            recognizer = new EigenFaceRecognizer(trainedMats.Size, threshold);
 
-                var labels = Enumerable.Range(0, fileNames.Count).ToArray();
+            recognizer.Train(trainedMats, labels);
 
-                recognizer = new EigenFaceRecognizer(trainedMats.Count, threshold);
-
-                recognizer.Train(new VectorOfMat(trainedMats.ToArray()),
-                    new VectorOfInt(labels));
-            });
         }
-
-
     }
 }
