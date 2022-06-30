@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,17 +17,21 @@ using System.Windows.Shapes;
 namespace Camera_Rental_System.Pages
 {
     /// <summary>
-    /// Interaction logic for HomeProducts.xaml
+    /// Interaction logic for CameraPanel.xaml
     /// </summary>
-    public partial class HomeProducts : UserControl, IPage
+    public partial class CameraPanel : UserControl, ICameraPanel
     {
-        public HomeProducts()
+        public CameraPanel(int id)
         {
+            ProductID = id;
             this.DataContext = this;
             InitializeComponent();
         }
 
+        public string CameraName { get; }
 
-        public event EventHandler<IPage> PageChanged;
+        public int ProductID { get; }
+
+        public ImageSource CameraImage { get; }
     }
 }

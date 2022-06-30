@@ -118,6 +118,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Pages\CameraPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\HomeProducts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -132,9 +136,13 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pages\CameraPanel.xaml.cs">
+      <DependentUpon>CameraPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\HomeProducts.xaml.cs">
       <DependentUpon>HomeProducts.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ICameraPanel.cs" />
     <Compile Include="Pages\IDataPage.cs" />
     <Compile Include="Pages\IPage.cs" />
     <Compile Include="Pages\LoginPage.xaml.cs">

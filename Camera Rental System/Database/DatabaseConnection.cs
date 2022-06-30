@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,31 +56,49 @@ namespace Camera_Rental_System.Database
                  "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                  "name TEXT, " +
                  "number TEXT") &&
+
             CreateTableIfNotExist(ClientTable,
                  "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                  "name TEXT, " +
                  "address TEXT, " +
                  "proofOfBilling TEXT") &&
+
             CreateTableIfNotExist(RentalOrderTable,
                  "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                  "cameraType TEXT, " +
                  "rentedOn DATE, " +
                  "amountPaid REAL") &&
+
             CreateTableIfNotExist(RentalDetailsTable,
                  "fee REAL, " +
                  "acceptedOn DATE") &&
+
             CreateTableIfNotExist(ShippingTable,
                  "name TEXT, address TEXT, " +
                  "company TEXT") &&
+
             CreateTableIfNotExist(CameraTable,
                  "name TEXT, description TEXT, specs TEXT, price REAL," +
                  "manufacturer TEXT") &&
+
             CreateTableIfNotExist(AddOnsTable,
                  "name TEXT, description TEXT, specs TEXT, price REAL," +
                  "manufacturer TEXT") &&
+
             CreateTableIfNotExist(AccountsTable,
-                 "name TEXT, password TEXT")
-            ;
+                 "name TEXT, password TEXT");
+
+        const string ImagesDatabase = "./Images";
+
+        public static Bitmap GetImageFromId(long id)
+        {
+            if (!Directory.Exists(ImagesDatabase))
+                Directory.CreateDirectory(ImagesDatabase);
+
+            var imageLocation = Path.Combine(ImagesDatabase, $"{id}.png");
+
+            return new Bitmap(imageLocation);
+        }
 
         public static bool InsertAccount(string name, string pass)
         {
