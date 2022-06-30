@@ -39,7 +39,10 @@
                         <TextBox x:Name="PersonName" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Username" Margin="0,0,0,15" FontSize="16" FontFamily="{DynamicResource Riveruta}">
 
                         </TextBox>
-                        <Button Click="SetPersonName" BorderBrush="{x:Null}" Background="#FFEBEBED" Foreground="#FF2B2B2B" Content="Apply" FontWeight="Bold" FontFamily="{DynamicResource Riveruta}"/>
+                        <TextBox x:Name="Password" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Password" Margin="0,0,0,15" FontSize="16" FontFamily="{DynamicResource Riveruta}">
+
+                        </TextBox>
+                        <Button Click="RegisterUser" BorderBrush="{x:Null}" Background="#FFEBEBED" Foreground="#FF2B2B2B" Content="Apply" FontWeight="Bold" FontFamily="{DynamicResource Riveruta}"/>
                     </StackPanel>
                 </Grid>
             </materialDesign:DialogHost.DialogContent>

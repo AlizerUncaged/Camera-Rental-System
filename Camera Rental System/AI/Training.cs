@@ -37,7 +37,7 @@ namespace Camera_Rental_System.AI
 
         public string LabelFromIndex(int i) => fileNames[i];
 
-        public void StartTraning()
+        public async Task StartTraningAsync()
         {
 
             var files = Directory.GetFiles(path, "*.png", SearchOption.AllDirectories);
@@ -45,21 +45,22 @@ namespace Camera_Rental_System.AI
             if (!files.Any())
                 throw new InvalidOperationException("No faces registered yet.");
 
+            await Task.Run(() => {
 
-            VectorOfMat trainedMats = new VectorOfMat();
-            VectorOfInt labels = new VectorOfInt();
-            int i = 0;
-            foreach (var file in files)
-            {
-                trainedMats.Push(new Image<Gray, byte>(file).Mat);
-                fileNames.Add(Path.GetFileNameWithoutExtension(file));
-                labels.Push(new[] { i++ });
-            }
+                VectorOfMat trainedMats = new VectorOfMat();
+                VectorOfInt labels = new VectorOfInt();
+                int i = 0;
+                foreach (var file in files)
+                {
+                    trainedMats.Push(new Image<Gray, byte>(file).Mat);
+                    fileNames.Add(Path.GetFileNameWithoutExtension(file));
+                    labels.Push(new[] { i++ });
+                }
 
-            recognizer = new EigenFaceRecognizer(trainedMats.Size, threshold);
+                recognizer = new EigenFaceRecognizer(trainedMats.Size, threshold);
 
-            recognizer.Train(trainedMats, labels);
-
+                recognizer.Train(trainedMats, labels);
+            });
         }
     }
 }

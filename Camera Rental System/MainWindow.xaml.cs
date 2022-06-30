@@ -20,8 +20,12 @@ namespace Camera_Rental_System
     /// </summary>
     public partial class MainWindow : Window
     {
+        public Dictionary<string, object> Data = new Dictionary<string, object>();
+
         public MainWindow()
         {
+            Database.DatabaseConnection.Connect();
+            Database.DatabaseConnection.InitializeTables();
             InitializeComponent();
             SetPage(new Pages.Register());
 
@@ -31,6 +35,15 @@ namespace Camera_Rental_System
             var incoming = e as UserControl;
             while (PageHandler.Children.Count >= 1)
                 PageHandler.Children.RemoveAt(0);
+
+            if (e is Pages.IDataPage dataPage)
+                dataPage.DataTransmission += (s, l) =>
+                {
+                    if (!Data.ContainsKey(l.Name))
+                    {
+                        Data.Add(l.Name, l.Data);
+                    }
+                };
 
             e.PageChanged += (s, k) => SetPage(k);
             PageHandler.Children.Add(incoming);

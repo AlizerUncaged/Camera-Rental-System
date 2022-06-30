@@ -63,10 +63,13 @@ namespace Camera_Rental_System.Pages
         private void LoginInstead(object sender, RoutedEventArgs e) =>
             PageChanged?.Invoke(this, new LoginPage());
 
-        private async void SetPersonName(object sender, RoutedEventArgs e)
+        private async void RegisterUser(object sender, RoutedEventArgs e)
         {
             detector.StopRecognizing();
             await new AI.Checkpoint(faces, PersonName.Text).StartTraningAsync();
+            Database.DatabaseConnection.InsertAccount(PersonName.Text, Password.Text);
+
+            // Add to database.
             PageChanged?.Invoke(this, new LoginPage());
 
         }

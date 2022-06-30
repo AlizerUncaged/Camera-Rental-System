@@ -20,7 +20,7 @@ namespace Camera_Rental_System.Pages
     /// <summary>
     /// Interaction logic for LoginPage.xaml
     /// </summary>
-    public partial class LoginPage : UserControl, IPage
+    public partial class LoginPage : UserControl, IPage, IDataPage
     {
         private AI.FaceDetector detector;
         public LoginPage()
@@ -31,7 +31,6 @@ namespace Camera_Rental_System.Pages
             detector.StartRecognizing();
             detector.FoundFace += FaceFound;
         }
-
         private async void FaceFound(object sender, Image<Bgr, byte> e)
         {
             Image<Bgr, byte> sized = e.Resize(100, 100, Emgu.CV.CvEnum.Inter.Cubic);
@@ -40,7 +39,7 @@ namespace Camera_Rental_System.Pages
 
             try
             {
-                trainer.StartTraning();
+                await trainer.StartTraningAsync();
             }
             catch (Exception ex)
             {
@@ -53,40 +52,46 @@ namespace Camera_Rental_System.Pages
             }
 
             var result = trainer.Predict(sized);
-            NegativeResult.Dispatcher.Invoke(() =>
-            {
-                NegativeResult.Visibility = Visibility.Visible;
-                NegativeResult.Text = $"Label: {result.Label}, Distance: {result.Distance}";
-            });
-
-            return;
 
             if (result.Label > -1)
             {
                 PersonName.Dispatcher.Invoke(() =>
                 {
                     RegisterInstead.Content = "OK";
-                    RegisterInstead.Click -= RegisterClicked;
-                    RegisterInstead.Click += (p, o) => PageChanged?.Invoke(this, new HomeProducts());
-
-                    PersonName.Text = $"Logged in as {trainer.LabelFromIndex(result.Label)}";
+                    RegisterInstead.Click -= PasswordIn;
+                    string username = trainer.LabelFromIndex(result.Label);
+                    PersonName.Text = $"Logged in as {username}";
                     SuccessDialog.IsOpen = true;
+
+                    RegisterInstead.Click += (p, o) =>
+                    {
+                        if (Database.DatabaseConnection.GetAccounts().Where(x => x.Name.ToLower().Trim() == username.ToLower().Trim() && x.Password == Password.Text).Any())
+                        {
+                            DataTransmission?.Invoke(this, ("user", username));
+                            PageChanged?.Invoke(this, new HomeProducts());
+                            detector.StopRecognizing();
+                        }
+                        else BadPassword.Visibility = Visibility.Visible;
+                    };
                 });
             }
             else
             {
-                //
-                //    NegativeResult.Dispatcher.Invoke(() =>
-                //    {
-                //        NegativeResult.Visibility = Visibility.Visible;
-                //    });
+
+                NegativeResult.Dispatcher.Invoke(() =>
+                {
+                    NegativeResult.Visibility = Visibility.Visible;
+                });
             }
         }
 
 
         public event EventHandler<IPage> PageChanged;
+        public event EventHandler<(string Name, object Data)> DataTransmission;
 
-        private void RegisterClicked(object sender, RoutedEventArgs e) =>
+        private void PasswordIn(object sender, RoutedEventArgs e)
+        {
             PageChanged?.Invoke(this, new Register());
+        }
     }
 }

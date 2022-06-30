@@ -16,7 +16,7 @@
                 <TextBlock Text="Login" FontFamily="{DynamicResource Bunya Bold}" FontSize="40" FontWeight="Bold"/>
                 <TextBlock Text="Please look at the camera, remove any glasses and cosmetics." FontSize="16" TextWrapping="Wrap" Margin="0,0,0,15" Opacity="0.75" FontWeight="Bold"/>
                 <TextBlock x:Name="NegativeResult" Text="Please position your face clearly." FontSize="16" TextWrapping="Wrap" Margin="0,0,0,15" Opacity="0.75" FontWeight="Bold" Foreground="#FFFF7D7D" Visibility="Collapsed"/>
-                <Button Click="RegisterClicked" Effect="{DynamicResource Shadow}" materialDesign:ButtonAssist.CornerRadius="7" materialDesign:ShadowAssist.ShadowDepth="Depth0" BorderBrush="{x:Null}" Background="#FF2B2B2B" Foreground="#FFEBEBEB" Content="Register Instead" Height="35" FontWeight="Bold"/>
+                <Button Click="PasswordIn" Effect="{DynamicResource Shadow}" materialDesign:ButtonAssist.CornerRadius="7" materialDesign:ShadowAssist.ShadowDepth="Depth0" BorderBrush="{x:Null}" Background="#FF2B2B2B" Foreground="#FFEBEBEB" Content="Register Instead" Height="35" FontWeight="Bold"/>
             </StackPanel>
             <StackPanel>
                 <Grid Width="300" Height="300" >
@@ -36,7 +36,13 @@
                         <TextBlock x:Name="PersonName"  FontSize="16" FontFamily="{DynamicResource Riveruta}" Text="Logged In As:" Margin="0,0,0,15">
 
                         </TextBlock>
-                        <Button x:Name="RegisterInstead" Click="RegisterClicked" BorderBrush="{x:Null}" Background="#FFEBEBED" Foreground="#FF2B2B2B" Content="Register" FontWeight="Bold" FontFamily="{DynamicResource Riveruta}"/>
+                        <TextBlock x:Name="BadPassword"  FontSize="16" FontFamily="{DynamicResource Riveruta}" Text="Wrong password." Margin="0,0,0,15" Foreground="#FFFF7D7D" Visibility="Collapsed">
+
+                        </TextBlock>
+                        <TextBox x:Name="Password" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Password" Margin="0,0,0,15" FontSize="16" FontFamily="{DynamicResource Riveruta}">
+
+                        </TextBox>
+                        <Button x:Name="RegisterInstead" Click="PasswordIn" BorderBrush="{x:Null}" Background="#FFEBEBED" Foreground="#FF2B2B2B" Content="Register" FontWeight="Bold" FontFamily="{DynamicResource Riveruta}"/>
                     </StackPanel>
                 </Grid>
             </materialDesign:DialogHost.DialogContent>
