@@ -10,8 +10,10 @@ namespace Camera_Rental_System.Pages
 {
     public interface ICameraPanel
     {
-        int ProductID { get; }
+        long ProductID { get; }
 
         ImageSource CameraImage { get; }
+
+        event EventHandler Clicked;
     }
 }

@@ -9,29 +9,27 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <DockPanel>
-            <ScrollViewer Margin="15" DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
-                <StackPanel Orientation="Horizontal">
-                    
+            <ScrollViewer VerticalScrollBarVisibility="Hidden" Margin="60,15,15,15" DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
+                <StackPanel x:Name="CameraOns" Orientation="Horizontal">
+
                 </StackPanel>
             </ScrollViewer>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Image x:Name="ProductImage" Source="/Resources/Cam1.png" Width="250" Height="250" Margin="0,0,25,0"/>
+                <Image x:Name="ProductImage" Source="{Binding CameraImage}" Width="250" Height="250" Margin="0,0,25,0"/>
                 <StackPanel TextElement.Foreground="#FF2B2B2B" MaxWidth="250" Orientation="Vertical" VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
                         <TextBlock Text="Reviews " FontSize="16" FontWeight="Bold" Margin="0,0,15,0" Opacity="0.75" />
-                        <materialDesign:PackIcon Kind="Star" VerticalAlignment="Center" Foreground="#FFF8BF58" Margin="0,0,10,0"/>
-                        <materialDesign:PackIcon Kind="Star" VerticalAlignment="Center" Foreground="#FFF8BF58" Margin="0,0,10,0"/>
-                        <materialDesign:PackIcon Kind="Star" VerticalAlignment="Center" Foreground="#FFF8BF58" Margin="0,0,10,0"/>
-                        <materialDesign:PackIcon Kind="Star" VerticalAlignment="Center" Foreground="#FFF8BF58" Margin="0,0,10,0"/>
-                        <materialDesign:PackIcon Kind="StarOutline" VerticalAlignment="Center" Foreground="#FFF8BF58" Margin="0,0,10,0"/>
+                        <StackPanel x:Name="Stars" Orientation="Horizontal" >
+
+                        </StackPanel>
                     </StackPanel>
-                    <TextBlock Text="Canon R" FontFamily="{DynamicResource Bunya Bold}" FontSize="40" Margin="0,0,0,15" FontWeight="Bold"/>
-                    <TextBlock Text="Born to rule." FontSize="16" FontWeight="Bold" Margin="0,0,0,15" Opacity="0.75"/>
+                    <TextBlock Text="{Binding ProductName}"  FontSize="40" Margin="0,0,0,15" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding ProductDescription}" FontSize="16" FontWeight="Bold" Margin="0,0,0,15" Opacity="0.75"/>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
                         <Button Effect="{DynamicResource Shadow}"  materialDesign:ShadowAssist.ShadowDepth="Depth0" Padding="0" BorderBrush="{x:Null}" Style="{DynamicResource MaterialDesignFloatingActionButton}" Background="#FFE3E2E0" Width="35" Height="35" Margin="0,0,25,0">
                             <materialDesign:PackIcon Kind="HeartOutline" Foreground="#FF2B2B2B" Width="20" Height="20"/>
                         </Button>
-                        <Button Effect="{DynamicResource Shadow}" materialDesign:ButtonAssist.CornerRadius="7" materialDesign:ShadowAssist.ShadowDepth="Depth0" BorderBrush="{x:Null}" Background="#FF2B2B2B" Foreground="#FFEBEBEB" Content="Add to cart" Height="35" FontWeight="Bold"/>
+                        <Button Effect="{DynamicResource Shadow}" materialDesign:ButtonAssist.CornerRadius="7" materialDesign:ShadowAssist.ShadowDepth="Depth0" BorderBrush="{x:Null}" Background="#FF2B2B2B" Foreground="#FFEBEBEB" Content="{Binding ProductPriceText}" Height="35" FontWeight="Bold"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

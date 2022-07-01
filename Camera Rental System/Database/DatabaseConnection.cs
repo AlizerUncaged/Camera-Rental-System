@@ -76,10 +76,10 @@ namespace Camera_Rental_System.Database
             CreateTableIfNotExist(ShippingTable,
                  "name TEXT, address TEXT, " +
                  "company TEXT") &&
-
+            //
             CreateTableIfNotExist(CameraTable,
-                 "name TEXT, description TEXT, specs TEXT, price REAL," +
-                 "manufacturer TEXT") &&
+                 "id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, specs TEXT, price REAL," +
+                 "manufacturer TEXT, rating INTEGER") &&
 
             CreateTableIfNotExist(AddOnsTable,
                  "name TEXT, description TEXT, specs TEXT, price REAL," +
@@ -88,18 +88,24 @@ namespace Camera_Rental_System.Database
             CreateTableIfNotExist(AccountsTable,
                  "name TEXT, password TEXT");
 
-        const string ImagesDatabase = "./Images";
-
-        public static Bitmap GetImageFromId(long id)
+        public static IEnumerable<(long Id, string Name, string Description, string Specs, double Price, string Manufacturer, long rating)> GetCameras()
         {
-            if (!Directory.Exists(ImagesDatabase))
-                Directory.CreateDirectory(ImagesDatabase);
 
-            var imageLocation = Path.Combine(ImagesDatabase, $"{id}.png");
+            List<(long Id, string Name, string Description, string Specs, double Price, string Manufacturer, long rating)>
+                cameras = new List<(long Id, string Name, string Description, string Specs, double Price, string Manufacturer, long rating)>();
 
-            return new Bitmap(imageLocation);
+            SQLiteDataReader rdr = new SQLiteCommand($"SELECT * FROM {CameraTable}",
+                Connection).ExecuteReader();
+
+            while (rdr.Read())
+                cameras.Add((GetElseDefault<long>(rdr, "id"), GetElseDefault<string>(rdr, "name"), GetElseDefault<string>(rdr, "description"),
+                     GetElseDefault<string>(rdr, "specs"),
+                     GetElseDefault<double>(rdr, "price"), GetElseDefault<string>(rdr, "manufacturer"), GetElseDefault<long>(rdr, "rating")));
+
+            return cameras;
+
+
         }
-
         public static bool InsertAccount(string name, string pass)
         {
             try

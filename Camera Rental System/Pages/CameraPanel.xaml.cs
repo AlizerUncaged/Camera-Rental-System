@@ -21,17 +21,31 @@ namespace Camera_Rental_System.Pages
     /// </summary>
     public partial class CameraPanel : UserControl, ICameraPanel
     {
-        public CameraPanel(int id)
+        private readonly double price;
+
+        public CameraPanel(long id, string name, double price)
         {
             ProductID = id;
+            CameraName = name;
+            this.price = price;
+
+            // CameraImage = new BitmapImage(new Uri("/Resources/Cam1.png", UriKind.Relative));
+            // CameraName = "Canon ";
             this.DataContext = this;
+
             InitializeComponent();
         }
 
         public string CameraName { get; }
+        public string Price => $"₱{price}";
 
-        public int ProductID { get; }
+        public long ProductID { get; }
 
-        public ImageSource CameraImage { get; }
+        public ImageSource CameraImage => new BitmapImage(new Uri($"pack://siteoforigin:,,,/Cameras/{ProductID}.png"));
+
+        public event EventHandler Clicked;
+
+        private void View(object sender, MouseButtonEventArgs e) =>
+            Clicked?.Invoke(this, e);
     }
 }
