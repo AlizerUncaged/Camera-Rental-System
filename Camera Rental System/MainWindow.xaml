@@ -19,11 +19,11 @@
     </WindowChrome.WindowChrome>
     <Grid Background="#EAEAEC">
         <Grid HorizontalAlignment="Left" Width="60">
-            <StackPanel Visibility="Collapsed" x:Name="LeftButtons" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.75">
+            <StackPanel Visibility="Collapsed" Cursor="Hand" x:Name="LeftButtons" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.75">
                 <Border MouseLeftButtonDown="ViewHome" Height="35" Width="34" CornerRadius="7,7,7,7" Background="#00000000" Margin="0,0,0,15">
                     <materialDesign:PackIcon Kind="HomeOutline" HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Height="20"/>
                 </Border>
-                <Grid Height="35" Width="34" Background="#00000000" Margin="0,0,0,15">
+                <Grid MouseLeftButtonDown="ViewDirectory" Height="35" Width="34" Background="#00000000" Margin="0,0,0,15">
                     <materialDesign:PackIcon Kind="StoreOutline" HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Height="20"/>
                 </Grid>
                 <Grid Height="35" Width="34" Background="#00000000">

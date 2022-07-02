@@ -66,5 +66,8 @@ namespace Camera_Rental_System
 
         private void ViewHome(object sender, MouseButtonEventArgs e) =>
             SetPage(new Pages.HomeProducts());
+
+        private void ViewDirectory(object sender, MouseButtonEventArgs e) =>
+            SetPage(new Pages.CameraDirectory());
     }
 }

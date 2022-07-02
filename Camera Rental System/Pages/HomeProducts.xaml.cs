@@ -37,10 +37,11 @@ namespace Camera_Rental_System.Pages
             ProductDescription = cam.Description;
             ProductPriceText = $"Add to Cart - ₱{cam.Price}";
             ProductID = cam.Id;
+            ProductSpecs = cam.Specs;
 
             InitializeComponent();
 
-            var cameras = Database.DatabaseConnection.GetCameras().Take(4);
+            var cameras = Database.DatabaseConnection.GetCameras().OrderBy(x => Utilities.Random.GlobalRandom.Next()).Take(4);
 
             foreach (var i in cameras)
             {
@@ -85,10 +86,16 @@ namespace Camera_Rental_System.Pages
         public long ProductID { get; }
         public string ProductName { get; }
         public string ProductPriceText { get; }
+        public string ProductSpecs { get; }
         public string ProductDescription { get; }
 
         public ImageSource CameraImage => new BitmapImage(new Uri($"pack://siteoforigin:,,,/Cameras/{ProductID}.png"));
 
         public event EventHandler<IPage> PageChanged;
+
+        private void CameraPanelClicked(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }
