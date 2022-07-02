@@ -68,7 +68,9 @@ namespace Camera_Rental_System.Pages
                         if (Database.DatabaseConnection.GetAccounts().Where(x => x.Name.ToLower().Trim() == username.ToLower().Trim() && x.Password == Password.Text).Any())
                         {
                             DataTransmission?.Invoke(this, ("user", username));
+                            DataTransmission?.Invoke(this, ("loggedIn", true));
                             PageChanged?.Invoke(this, new HomeProducts());
+
                             detector.StopRecognizing();
                         }
                         else BadPassword.Visibility = Visibility.Visible;

@@ -40,9 +40,15 @@ namespace Camera_Rental_System
                 dataPage.DataTransmission += (s, l) =>
                 {
                     if (!Data.ContainsKey(l.Name))
-                    {
                         Data.Add(l.Name, l.Data);
+
+                    if (l.Name is "loggedIn" &&
+                        l.Data is bool loggedIn &&
+                        loggedIn)
+                    {
+                        LeftButtons.Visibility = Visibility.Visible;
                     }
+
                 };
 
             e.PageChanged += (s, k) => SetPage(k);
@@ -57,5 +63,8 @@ namespace Camera_Rental_System
             }
             catch { }
         }
+
+        private void ViewHome(object sender, MouseButtonEventArgs e) =>
+            SetPage(new Pages.HomeProducts());
     }
 }

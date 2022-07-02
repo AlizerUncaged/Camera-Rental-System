@@ -72,7 +72,7 @@ namespace Camera_Rental_System.Pages
                             Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFF8BF58")),
                             Margin = new Thickness(0, 0, 10, 0)
                         }
-                    ); ;
+                    );
             }
         }
 
