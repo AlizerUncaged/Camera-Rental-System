@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.Drawing;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -136,39 +137,48 @@ namespace Camera_Rental_System.Database
             return (long)cmd.ExecuteScalar();
         }
 
-        public static IEnumerable<(long Id, string Name, string Description, string Specs, double Price, string Manufacturer, long rating)>
-            GetCameras()
+        public static object GetCameras()
         {
 
-            List<(long Id, string Name, string Description, string Specs, double Price, string Manufacturer, long rating)>
-                cameras = new List<(long Id, string Name, string Description, string Specs, double Price, string Manufacturer, long rating)>();
+            List<dynamic> cameras = new List<dynamic>();
 
             SQLiteDataReader rdr = new SQLiteCommand($"SELECT * FROM {CameraTable}",
                 Connection).ExecuteReader();
 
             while (rdr.Read())
-                cameras.Add((GetElseDefault<long>(rdr, "id"), GetElseDefault<string>(rdr, "name"), GetElseDefault<string>(rdr, "description"),
-                     GetElseDefault<string>(rdr, "specs"),
-                     GetElseDefault<double>(rdr, "price"), GetElseDefault<string>(rdr, "manufacturer"), GetElseDefault<long>(rdr, "rating")));
+                cameras.Add(new
+                {
+                    Id = GetElseDefault<long>(rdr, "id"),
+                    Name = GetElseDefault<string>(rdr, "name"),
+                    Description = GetElseDefault<string>(rdr, "description"),
+                    Specs = GetElseDefault<string>(rdr, "specs"),
+                    Price = GetElseDefault<double>(rdr, "price"),
+                    Manufacturer = GetElseDefault<string>(rdr, "manufacturer"),
+                    Rating = GetElseDefault<long>(rdr, "rating")
+                });
 
             return cameras;
 
 
         }
-        public static IEnumerable<(string Name, string Description, string Specs, double Price, string Manufacturer, long Id)> GetAddOns()
+        public static object GetAddOns()
         {
 
-            List<(string Name, string Description, string Specs, double Price, string Manufacturer, long id)>
-                addons = new List<(string Name, string Description, string Specs, double Price, string Manufacturer, long id)>();
+            List<dynamic> addons = new List<dynamic>();
 
             SQLiteDataReader rdr = new SQLiteCommand($"SELECT * FROM {AddOnsTable}",
                 Connection).ExecuteReader();
 
             while (rdr.Read())
-                addons.Add((GetElseDefault<string>(rdr, "name"), GetElseDefault<string>(rdr, "description"),
-                    GetElseDefault<string>(rdr, "specs"), GetElseDefault<double>(rdr, "price"), GetElseDefault<string>(rdr, "manufacturer"),
-                     GetElseDefault<long>(rdr, "id")
-                    ));
+                addons.Add(new
+                {
+                    Id = GetElseDefault<long>(rdr, "id"),
+                    Name = GetElseDefault<string>(rdr, "name"),
+                    Description = GetElseDefault<string>(rdr, "description"),
+                    Specs = GetElseDefault<string>(rdr, "specs"),
+                    Price = GetElseDefault<double>(rdr, "price"),
+                    Manufacturer = GetElseDefault<string>(rdr, "manufacturer")  
+                });
 
             return addons;
 

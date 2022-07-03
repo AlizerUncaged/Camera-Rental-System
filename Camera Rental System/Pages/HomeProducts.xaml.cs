@@ -25,13 +25,10 @@ namespace Camera_Rental_System.Pages
         {
             this.DataContext = this;
 
-            // aaaaaaaaaaaaaaaaaaaaaaaaaa
 
-            var cam = Database.DatabaseConnection.GetCameras().LastOrDefault();
-
-            if (currentId != -1)
-                cam = Database.DatabaseConnection.GetCameras().FirstOrDefault(x => x.Id == currentId);
-            else cam = Database.DatabaseConnection.GetCameras().LastOrDefault();
+            dynamic cam = currentId != -1 ?
+                (Database.DatabaseConnection.GetCameras() as IEnumerable<dynamic>).FirstOrDefault(x => x.Id == currentId) :
+                (Database.DatabaseConnection.GetCameras() as IEnumerable<dynamic>).LastOrDefault();
 
             ProductName = cam.Name;
             ProductDescription = cam.Description;
@@ -41,31 +38,20 @@ namespace Camera_Rental_System.Pages
 
             InitializeComponent();
 
-            if (showCameras)
+            dynamic showObjects = showCameras ?
+                (Database.DatabaseConnection.GetCameras() as IEnumerable<dynamic>).OrderBy(x => Utilities.Random.GlobalRandom.Next()).Take(4) :
+                (Database.DatabaseConnection.GetAddOns() as IEnumerable<dynamic>).OrderBy(x => Utilities.Random.GlobalRandom.Next()).Take(4);
+
+
+            foreach (var i in showObjects)
             {
-                var addons = Database.DatabaseConnection.GetAddOns().OrderBy(x => Utilities.Random.GlobalRandom.Next()).Take(4);
-
-                foreach (var i in addons)
-                {
-                    var addon = new AddOnPanel(i.Id, i.Name, i.Price);
-                    // addon.MouseDown += AddOnMouseDown;
-                    AddOns.Children.Add(addon);
-                }
-            }
-            else
-            {
-
-                var addons = Database.DatabaseConnection.GetCameras().OrderBy(x => Utilities.Random.GlobalRandom.Next()).Take(4);
-
-                foreach (var i in addons)
-                {
-                    var addon = new AddOnPanel(i.Id, i.Name, i.Price);
-                    // addon.MouseDown += AddOnMouseDown;
-                    AddOns.Children.Add(addon);
-                }
+                var addon = showCameras ? (ICameraPanel)new CameraPanel(i.Id, i.Name, i.Price) :
+                    new AddOnPanel(i.Id, i.Name, i.Price);
+                AddOns.Children.Add(addon as UserControl);
             }
 
-            for (int i = 0; i < cam.rating; i++)
+
+            for (int i = 0; i < cam.Rating; i++)
             {
                 Stars.Children.Add(
                         new PackIcon
@@ -78,7 +64,7 @@ namespace Camera_Rental_System.Pages
                     ); ;
             }
 
-            for (int i = 0; i < 5 - cam.rating; i++)
+            for (int i = 0; i < 5 - cam.Rating; i++)
             {
                 Stars.Children.Add(
                         new PackIcon
@@ -95,7 +81,7 @@ namespace Camera_Rental_System.Pages
         private void AddOnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is CameraPanel camPanel)
-                PageChanged?.Invoke(this, new HomeProducts(camPanel.ProductID));
+                PageChanged?.Invoke(this, new HomeProducts(camPanel.ProductID, false));
         }
 
         public long ProductID { get; }

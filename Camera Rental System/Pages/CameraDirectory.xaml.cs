@@ -24,11 +24,11 @@ namespace Camera_Rental_System.Pages
         {
             InitializeComponent();
 
-            var cameras = Database.DatabaseConnection.GetCameras();
+            dynamic cameras = Database.DatabaseConnection.GetCameras();
             foreach (var camera in cameras)
             {
                 var cam = new CameraPanel(camera.Id, camera.Name, camera.Price);
-                cam.MouseLeftButtonDown += (s, e) => PageChanged?.Invoke(this, new HomeProducts(camera.Id));
+                cam.MouseLeftButtonDown += (s, e) => PageChanged?.Invoke(this, new HomeProducts(camera.Id, false));
                 Cameras.Children.Add(cam);
             }
         }
