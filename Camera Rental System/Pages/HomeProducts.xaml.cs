@@ -21,7 +21,7 @@ namespace Camera_Rental_System.Pages
     /// </summary>
     public partial class HomeProducts : UserControl, IPage
     {
-        public HomeProducts(long currentId = -1)
+        public HomeProducts(long currentId = -1, bool showCameras = true)
         {
             this.DataContext = this;
 
@@ -41,13 +41,28 @@ namespace Camera_Rental_System.Pages
 
             InitializeComponent();
 
-            var cameras = Database.DatabaseConnection.GetCameras().OrderBy(x => Utilities.Random.GlobalRandom.Next()).Take(4);
-
-            foreach (var i in cameras)
+            if (showCameras)
             {
-                var camPanel = new CameraPanel(i.Id, i.Name, i.Price);
-                camPanel.MouseDown += CamPanel_MouseDown;
-                CameraOns.Children.Add(camPanel);
+                var addons = Database.DatabaseConnection.GetAddOns().OrderBy(x => Utilities.Random.GlobalRandom.Next()).Take(4);
+
+                foreach (var i in addons)
+                {
+                    var addon = new AddOnPanel(i.Id, i.Name, i.Price);
+                    // addon.MouseDown += AddOnMouseDown;
+                    AddOns.Children.Add(addon);
+                }
+            }
+            else
+            {
+
+                var addons = Database.DatabaseConnection.GetCameras().OrderBy(x => Utilities.Random.GlobalRandom.Next()).Take(4);
+
+                foreach (var i in addons)
+                {
+                    var addon = new AddOnPanel(i.Id, i.Name, i.Price);
+                    // addon.MouseDown += AddOnMouseDown;
+                    AddOns.Children.Add(addon);
+                }
             }
 
             for (int i = 0; i < cam.rating; i++)
@@ -77,7 +92,7 @@ namespace Camera_Rental_System.Pages
             }
         }
 
-        private void CamPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        private void AddOnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is CameraPanel camPanel)
                 PageChanged?.Invoke(this, new HomeProducts(camPanel.ProductID));

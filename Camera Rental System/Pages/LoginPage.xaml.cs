@@ -65,11 +65,13 @@ namespace Camera_Rental_System.Pages
 
                     RegisterInstead.Click += (p, o) =>
                     {
-                        if (Database.DatabaseConnection.GetAccounts().Where(x => x.Name.ToLower().Trim() == username.ToLower().Trim() && x.Password == Password.Text).Any())
+                        var similarAccounts = Database.DatabaseConnection.GetAccounts().Where(x => x.Name.ToLower().Trim() == username.ToLower().Trim() && x.Password == Password.Text);
+                        if (similarAccounts.Any())
                         {
                             DataTransmission?.Invoke(this, ("user", username));
                             DataTransmission?.Invoke(this, ("loggedIn", true));
-                            PageChanged?.Invoke(this, new HomeProducts());
+                            DataTransmission?.Invoke(this, ("isAdmin", similarAccounts.FirstOrDefault().AccountType == 1));
+                            PageChanged?.Invoke(this, new CameraDirectory());
 
                             detector.StopRecognizing();
                         }

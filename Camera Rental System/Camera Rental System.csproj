@@ -102,8 +102,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Pages\AddItems.xaml.cs">
+      <DependentUpon>AddItems.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\CameraDirectory.xaml.cs">
       <DependentUpon>CameraDirectory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\AddOnPanel.xaml.cs">
+      <DependentUpon>AddOnPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utilities\Random.cs" />
     <Page Include="MainWindow.xaml">
@@ -122,9 +128,17 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Pages\AddItems.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\CameraDirectory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\AddOnPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\CameraPanel.xaml">
       <SubType>Designer</SubType>

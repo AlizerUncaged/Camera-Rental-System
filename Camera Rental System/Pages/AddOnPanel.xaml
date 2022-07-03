@@ -1,9 +1,10 @@
-﻿<UserControl x:Class="Camera_Rental_System.Pages.CameraPanel"
+﻿<UserControl x:Class="Camera_Rental_System.Pages.AddOnPanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" MouseLeftButtonDown="View" 
-             xmlns:local="clr-namespace:Camera_Rental_System.Pages"
+             xmlns:local="clr-namespace:Camera_Rental_System.Pages" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" MinHeight="200" MaxWidth="175" Cursor="Hand"
              d:DesignHeight="200" d:DesignWidth="175" Margin="25">
     <UserControl.Effect>
@@ -11,11 +12,17 @@
     </UserControl.Effect>
     <Border  ClipToBounds="True" CornerRadius="7" Background="#FFEAEAEC">
         <DockPanel Margin="15">
+            <StackPanel Visibility="Collapsed" x:Name="ChosesMarker" DockPanel.Dock="Top"  Orientation="Horizontal">
+                <materialDesign:PackIcon  Kind="Check" Foreground="#FF48FF58" Margin="0,0,5,0">
+
+                </materialDesign:PackIcon>
+                <TextBlock FontSize="12" FontWeight="Bold" VerticalAlignment="Center">In cart</TextBlock>
+            </StackPanel>
             <Image DockPanel.Dock="Top" VerticalAlignment="Top" Source="{Binding CameraImage}" Height="100"  Margin="0,0,0,15">
 
             </Image>
             <StackPanel>
-                <TextBlock TextWrapping="Wrap" Text="{Binding CameraName}" FontWeight="Bold" FontSize="16">
+                <TextBlock Text="{Binding AddOnName}" TextWrapping="Wrap" FontWeight="Bold" FontSize="16">
 
                 </TextBlock>
                 <TextBlock Text="{Binding Price}"   FontSize="24">

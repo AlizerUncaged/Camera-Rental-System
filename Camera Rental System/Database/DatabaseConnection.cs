@@ -82,13 +82,62 @@ namespace Camera_Rental_System.Database
                  "manufacturer TEXT, rating INTEGER") &&
 
             CreateTableIfNotExist(AddOnsTable,
-                 "name TEXT, description TEXT, specs TEXT, price REAL," +
+                 "id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, specs TEXT, price REAL," +
                  "manufacturer TEXT") &&
 
             CreateTableIfNotExist(AccountsTable,
-                 "name TEXT, password TEXT");
+                 "name TEXT, password TEXT, accountType INTEGER");
 
-        public static IEnumerable<(long Id, string Name, string Description, string Specs, double Price, string Manufacturer, long rating)> GetCameras()
+        public static long InsertAddOn(string Name, string Description, string Specs, double Price, string Manufacturer)
+        {
+            var cmd = new SQLiteCommand(Connection);
+            cmd.CommandText = $"INSERT INTO {AddOnsTable}(name, description, specs, price, manufacturer) " +
+                $"VALUES(@b, @c, @d, @e, @f)";
+
+            cmd.Parameters.AddWithValue("b", Name);
+            cmd.Parameters.AddWithValue("c", Description);
+            cmd.Parameters.AddWithValue("d", Specs);
+            cmd.Parameters.AddWithValue("e", Price);
+            cmd.Parameters.AddWithValue("f", Manufacturer);
+
+
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+
+            string sql = "SELECT last_insert_rowid()";
+            cmd = new SQLiteCommand(sql, Connection);
+
+            return (long)cmd.ExecuteScalar();
+        }
+
+        public static long InsertCamera(string Name, string Description, string Specs, double Price, string Manufacturer, long rating)
+        {
+
+            var cmd = new SQLiteCommand(Connection);
+            cmd.CommandText = $"INSERT INTO {CameraTable}(name, description, specs, price, manufacturer, rating) " +
+                $"VALUES(@b, @c, @d, @e, @f, @g)";
+
+            cmd.Parameters.AddWithValue("b", Name);
+            cmd.Parameters.AddWithValue("c", Description);
+            cmd.Parameters.AddWithValue("d", Specs);
+            cmd.Parameters.AddWithValue("e", Price);
+            cmd.Parameters.AddWithValue("f", Manufacturer);
+            cmd.Parameters.AddWithValue("g", rating);
+
+
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+
+            string sql = "SELECT last_insert_rowid()";
+            cmd = new SQLiteCommand(sql, Connection);
+
+            return (long)cmd.ExecuteScalar();
+        }
+
+        public static IEnumerable<(long Id, string Name, string Description, string Specs, double Price, string Manufacturer, long rating)>
+            GetCameras()
         {
 
             List<(long Id, string Name, string Description, string Specs, double Price, string Manufacturer, long rating)>
@@ -106,16 +155,36 @@ namespace Camera_Rental_System.Database
 
 
         }
-        public static bool InsertAccount(string name, string pass)
+        public static IEnumerable<(string Name, string Description, string Specs, double Price, string Manufacturer, long Id)> GetAddOns()
+        {
+
+            List<(string Name, string Description, string Specs, double Price, string Manufacturer, long id)>
+                addons = new List<(string Name, string Description, string Specs, double Price, string Manufacturer, long id)>();
+
+            SQLiteDataReader rdr = new SQLiteCommand($"SELECT * FROM {AddOnsTable}",
+                Connection).ExecuteReader();
+
+            while (rdr.Read())
+                addons.Add((GetElseDefault<string>(rdr, "name"), GetElseDefault<string>(rdr, "description"),
+                    GetElseDefault<string>(rdr, "specs"), GetElseDefault<double>(rdr, "price"), GetElseDefault<string>(rdr, "manufacturer"),
+                     GetElseDefault<long>(rdr, "id")
+                    ));
+
+            return addons;
+
+
+        }
+        public static bool InsertAccount(string name, string pass, long type)
         {
             try
             {
                 var cmd = new SQLiteCommand(Connection);
-                cmd.CommandText = $"INSERT INTO {AccountsTable}(name, password) " +
-                    $"VALUES(@a, @b)";
+                cmd.CommandText = $"INSERT INTO {AccountsTable}(name, password, accountType) " +
+                    $"VALUES(@a, @b, @c)";
 
                 cmd.Parameters.AddWithValue("a", name);
                 cmd.Parameters.AddWithValue("b", pass);
+                cmd.Parameters.AddWithValue("c", type);
 
 
                 cmd.Prepare();
@@ -129,17 +198,19 @@ namespace Camera_Rental_System.Database
             }
             return false;
         }
-        public static IEnumerable<(string Name, string Password)> GetAccounts()
+        public static IEnumerable<(string Name, string Password, long AccountType)> GetAccounts()
         {
 
-            List<(string Name, string Password)> accounts = new List<(string Name, string Password)>();
+            List<(string Name, string Password, long AccountType)> accounts = new List<(string Name, string Password, long AccountType)>();
 
             SQLiteDataReader rdr = new SQLiteCommand($"SELECT * FROM {AccountsTable}",
                 Connection).ExecuteReader();
 
             while (rdr.Read())
                 accounts.Add(
-                    (GetElseDefault<string>(rdr, "name"), (GetElseDefault<string>(rdr, "password"))));
+                    (GetElseDefault<string>(rdr, "name"),
+                    GetElseDefault<string>(rdr, "password"),
+                    (GetElseDefault<long>(rdr, "accountType"))));
 
             return accounts;
 
@@ -148,11 +219,11 @@ namespace Camera_Rental_System.Database
         public static T GetElseDefault<T>(SQLiteDataReader reader, string name)
         {
             var objVal = reader.GetValue(reader.GetOrdinal(name));
-            if (objVal is null)
+            if (objVal is null || reader.IsDBNull(reader.GetOrdinal(name)))
                 return default(T);
             try
             {
-                return (T)objVal;
+                return (T)Convert.ChangeType(objVal, typeof(T));
             }
             catch { }
 

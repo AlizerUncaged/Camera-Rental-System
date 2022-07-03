@@ -5,11 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Camera_Rental_System.Pages"
              mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ScrollViewer Margin="60,0,0,0" VerticalScrollBarVisibility="Hidden">
+        <ScrollViewer Focusable="False" Margin="60,0,0,0" VerticalScrollBarVisibility="Hidden">
             <WrapPanel x:Name="Cameras">
-                
+
             </WrapPanel>
         </ScrollViewer>
     </Grid>

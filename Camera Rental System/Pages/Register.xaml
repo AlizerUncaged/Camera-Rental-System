@@ -42,6 +42,7 @@
                         <TextBox x:Name="Password" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Password" Margin="0,0,0,15" FontSize="16" FontFamily="{DynamicResource Riveruta}">
 
                         </TextBox>
+                        <CheckBox x:Name="AdministratorCheckBox" Content="Administrator"  Margin="0,0,0,15"></CheckBox>
                         <Button Click="RegisterUser" BorderBrush="{x:Null}" Background="#FFEBEBED" Foreground="#FF2B2B2B" Content="Apply" FontWeight="Bold" FontFamily="{DynamicResource Riveruta}"/>
                     </StackPanel>
                 </Grid>

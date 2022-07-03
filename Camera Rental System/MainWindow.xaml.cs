@@ -42,12 +42,15 @@ namespace Camera_Rental_System
                     if (!Data.ContainsKey(l.Name))
                         Data.Add(l.Name, l.Data);
 
-                    if (l.Name is "loggedIn" &&
-                        l.Data is bool loggedIn &&
-                        loggedIn)
-                    {
-                        LeftButtons.Visibility = Visibility.Visible;
-                    }
+
+                    if (l.Name is "loggedIn")
+                        LeftButtons.Visibility =
+                            l.Data is bool loggedIn &&
+                            loggedIn ? Visibility.Visible : Visibility.Collapsed;
+                    if (l.Name is "isAdmin")
+                        AddItems.Visibility =
+                        l.Data is bool isAdmin && isAdmin ? Visibility.Visible : Visibility.Collapsed;
+
 
                 };
 
@@ -69,5 +72,8 @@ namespace Camera_Rental_System
 
         private void ViewDirectory(object sender, MouseButtonEventArgs e) =>
             SetPage(new Pages.CameraDirectory());
+
+        private void AddItemsClicked(object sender, RoutedEventArgs e) =>
+            SetPage(new Pages.AddItems());
     }
 }

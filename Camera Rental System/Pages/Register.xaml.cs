@@ -67,7 +67,7 @@ namespace Camera_Rental_System.Pages
         {
             detector.StopRecognizing();
             await new AI.Checkpoint(faces, PersonName.Text).StartTraningAsync();
-            Database.DatabaseConnection.InsertAccount(PersonName.Text, Password.Text);
+            Database.DatabaseConnection.InsertAccount(PersonName.Text, Password.Text, (bool)AdministratorCheckBox.IsChecked ? 1 : 0);
 
             // Add to database.
             PageChanged?.Invoke(this, new LoginPage());

@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:Camera_Rental_System"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         x:Class="Camera_Rental_System.MainWindow"
-        TextElement.FontFamily="{DynamicResource Bunya Bold}"
         TextOptions.TextFormattingMode="Display"  
         TextOptions.TextRenderingMode="Grayscale" 
         TextElement.Foreground="#2B2B2B"
@@ -36,7 +35,12 @@
             </StackPanel>
         </Grid>
         <Grid VerticalAlignment="Top"/>
+        <Button Click="AddItemsClicked" Panel.ZIndex="3" Visibility="Collapsed" x:Name="AddItems" Padding="0" Margin="15" Style="{DynamicResource MaterialDesignFloatingActionButton}" 
+                Background="#FFEAEAEC" Foreground="#FF2B2B2B" VerticalAlignment="Bottom" 
+                HorizontalAlignment="Right" BorderBrush="{x:Null}" Width="35" Height="35">
+            <materialDesign:PackIcon Kind="Plus"></materialDesign:PackIcon>
+        </Button>
 
-        <Grid x:Name="PageHandler"/>
+        <Grid Panel.ZIndex="2" x:Name="PageHandler"/>
     </Grid>
 </Window>
