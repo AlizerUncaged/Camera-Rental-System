@@ -25,7 +25,7 @@
                 <Grid MouseLeftButtonDown="ViewDirectory" Height="35" Width="34" Background="#00000000" Margin="0,0,0,15">
                     <materialDesign:PackIcon Kind="StoreOutline" HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Height="20"/>
                 </Grid>
-                <Grid Height="35" Width="34" Background="#00000000">
+                <Grid MouseLeftButtonDown="AddCamerasClicked" Height="35" Width="34" Background="#00000000">
                     <materialDesign:PackIcon Kind="AboutOutline" HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Height="20"/>
                 </Grid>
 
@@ -35,10 +35,16 @@
             </StackPanel>
         </Grid>
         <Grid VerticalAlignment="Top"/>
-        <Button Click="AddItemsClicked" Panel.ZIndex="3" Visibility="Collapsed" x:Name="AddItems" Padding="0" Margin="15" Style="{DynamicResource MaterialDesignFloatingActionButton}" 
+        <Button PreviewMouseLeftButtonDown="AddItemsClicked" Panel.ZIndex="3" Visibility="Collapsed" x:Name="AddItems" Padding="0" Margin="15" Style="{DynamicResource MaterialDesignFloatingActionButton}" 
                 Background="#FFEAEAEC" Foreground="#FF2B2B2B" VerticalAlignment="Bottom" 
                 HorizontalAlignment="Right" BorderBrush="{x:Null}" Width="35" Height="35">
             <materialDesign:PackIcon Kind="Plus"></materialDesign:PackIcon>
+            <Button.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Add Items" Click="AddCamerasClicked"/>
+                    <MenuItem Header="Add Freight Handler" />
+                </ContextMenu>
+            </Button.ContextMenu>
         </Button>
 
         <Grid Panel.ZIndex="2" x:Name="PageHandler"/>

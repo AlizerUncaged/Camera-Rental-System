@@ -21,6 +21,8 @@ namespace Camera_Rental_System.Pages
     /// </summary>
     public partial class AddOnPanel : UserControl, ICameraPanel
     {
+        public double PriceValue => price;
+
         private readonly double price;
 
         public AddOnPanel(long id, string name, double price)
@@ -47,10 +49,13 @@ namespace Camera_Rental_System.Pages
 
         public event EventHandler Clicked;
 
+        public event EventHandler<bool> IsPicked;
+
         private void View(object sender, MouseButtonEventArgs e)
         {
             IsChosen = !IsChosen;
             ChosesMarker.Visibility = IsChosen ? Visibility.Visible : Visibility.Collapsed;
+            IsPicked?.Invoke(this, IsChosen);
         }
     }
 }

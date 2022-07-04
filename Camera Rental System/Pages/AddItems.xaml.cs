@@ -58,13 +58,15 @@ namespace Camera_Rental_System.Pages
             else
             {
                 folder = "AddOns";
-                   lastInsert = Database.DatabaseConnection.InsertAddOn(
-                    ItemName.Text, Description.Text, Specs.Text, double.Parse(Price.Text),
-                   Manufacturer.Text);
+                lastInsert = Database.DatabaseConnection.InsertAddOn(
+                 ItemName.Text, Description.Text, Specs.Text, double.Parse(Price.Text),
+                Manufacturer.Text);
             }
 
             if (lastInsert != -1 && !string.IsNullOrWhiteSpace(Filename))
             {
+                if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
+
                 var cameraImage = $"./{folder}/{lastInsert}.png";
                 File.Copy(Filename, cameraImage);
             }

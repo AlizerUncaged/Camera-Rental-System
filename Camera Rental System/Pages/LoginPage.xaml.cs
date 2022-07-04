@@ -2,6 +2,7 @@
 using Emgu.CV.Structure;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,8 +35,11 @@ namespace Camera_Rental_System.Pages
         private async void FaceFound(object sender, Image<Bgr, byte> e)
         {
             Image<Bgr, byte> sized = e.Resize(100, 100, Emgu.CV.CvEnum.Inter.Cubic);
+            const string facesDir = "./Faces";
 
-            var trainer = new AI.Training("./Faces");
+            if (!Directory.Exists(facesDir)) Directory.CreateDirectory(facesDir);
+
+            var trainer = new AI.Training(facesDir);
 
             try
             {
@@ -68,11 +72,12 @@ namespace Camera_Rental_System.Pages
                         var similarAccounts = Database.DatabaseConnection.GetAccounts().Where(x => x.Name.ToLower().Trim() == username.ToLower().Trim() && x.Password == Password.Text);
                         if (similarAccounts.Any())
                         {
+
+                            var acc = similarAccounts.FirstOrDefault();
                             DataTransmission?.Invoke(this, ("user", username));
+                            DataTransmission?.Invoke(this, ("accountId", acc.Id));
                             DataTransmission?.Invoke(this, ("loggedIn", true));
                             DataTransmission?.Invoke(this, ("isAdmin", similarAccounts.FirstOrDefault().AccountType == 1));
-                            PageChanged?.Invoke(this, new CameraDirectory());
-
                             detector.StopRecognizing();
                         }
                         else BadPassword.Visibility = Visibility.Visible;

@@ -105,11 +105,20 @@
     <Compile Include="Pages\AddItems.xaml.cs">
       <DependentUpon>AddItems.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\AddShipping.xaml.cs">
+      <DependentUpon>AddShipping.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\AskClient.xaml.cs">
+      <DependentUpon>AskClient.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\CameraDirectory.xaml.cs">
       <DependentUpon>CameraDirectory.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\AddOnPanel.xaml.cs">
       <DependentUpon>AddOnPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\OrderItem.xaml.cs">
+      <DependentUpon>OrderItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utilities\Random.cs" />
     <Page Include="MainWindow.xaml">
@@ -132,6 +141,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\AddShipping.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\AskClient.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\CameraDirectory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -149,6 +166,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\OrderItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -21,7 +21,23 @@ namespace Camera_Rental_System.Pages
     /// </summary>
     public partial class HomeProducts : UserControl, IPage
     {
-        public HomeProducts(long currentId = -1, bool showCameras = true)
+
+        private double _price = 0;
+        private double price
+        {
+            get => _price;
+
+            set
+            {
+                _price = value;
+                PriceText.Content = $"Add to Cart - ₱{price}";
+
+            }
+        }
+        private double camPrice = 0;
+        private readonly long account;
+
+        public HomeProducts(long account, long currentId = -1, bool showCameras = true)
         {
             this.DataContext = this;
 
@@ -32,11 +48,13 @@ namespace Camera_Rental_System.Pages
 
             ProductName = cam.Name;
             ProductDescription = cam.Description;
-            ProductPriceText = $"Add to Cart - ₱{cam.Price}";
             ProductID = cam.Id;
             ProductSpecs = cam.Specs;
-
             InitializeComponent();
+
+            camPrice = cam.Price;
+            price = cam.Price;
+
 
             dynamic showObjects = showCameras ?
                 (Database.DatabaseConnection.GetCameras() as IEnumerable<dynamic>).OrderBy(x => Utilities.Random.GlobalRandom.Next()).Take(4) :
@@ -47,7 +65,17 @@ namespace Camera_Rental_System.Pages
             {
                 var addon = showCameras ? (ICameraPanel)new CameraPanel(i.Id, i.Name, i.Price) :
                     new AddOnPanel(i.Id, i.Name, i.Price);
-                AddOns.Children.Add(addon as UserControl);
+
+                var addOnUc = addon as UserControl;
+                AddOns.Children.Add(addOnUc);
+
+                if (addon is AddOnPanel addOnPanel)
+                {
+                    addOnPanel.IsPicked += (s, e) =>
+                    {
+                        price += e ? addOnPanel.PriceValue : -addOnPanel.PriceValue;
+                    };
+                }
             }
 
 
@@ -76,17 +104,18 @@ namespace Camera_Rental_System.Pages
                         }
                     );
             }
+
+            this.account = account;
         }
 
         private void AddOnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is CameraPanel camPanel)
-                PageChanged?.Invoke(this, new HomeProducts(camPanel.ProductID, false));
+                PageChanged?.Invoke(this, new HomeProducts(account, camPanel.ProductID, false));
         }
 
         public long ProductID { get; }
         public string ProductName { get; }
-        public string ProductPriceText { get; }
         public string ProductSpecs { get; }
         public string ProductDescription { get; }
 
@@ -97,6 +126,19 @@ namespace Camera_Rental_System.Pages
         private void CameraPanelClicked(object sender, MouseButtonEventArgs e)
         {
 
+        }
+
+        private void OrderClicked(object sender, RoutedEventArgs e)
+        {
+            List<dynamic> items = new List<dynamic>();
+            items.Add(new { Name = ProductName, Price = camPrice });
+
+            foreach (var child in AddOns.Children)
+                if (child is AddOnPanel addOnsPanel && addOnsPanel.IsChosen)
+                    items.Add(new { Name = addOnsPanel.AddOnName, Price = addOnsPanel.PriceValue });
+            
+
+            PageChanged?.Invoke(this, new OrderItem(items, account));
         }
     }
 }

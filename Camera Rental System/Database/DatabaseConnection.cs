@@ -77,7 +77,7 @@ namespace Camera_Rental_System.Database
             CreateTableIfNotExist(ShippingTable,
                  "name TEXT, address TEXT, " +
                  "company TEXT") &&
-            //
+
             CreateTableIfNotExist(CameraTable,
                  "id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, specs TEXT, price REAL," +
                  "manufacturer TEXT, rating INTEGER") &&
@@ -87,7 +87,28 @@ namespace Camera_Rental_System.Database
                  "manufacturer TEXT") &&
 
             CreateTableIfNotExist(AccountsTable,
-                 "name TEXT, password TEXT, accountType INTEGER");
+                 "id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, password TEXT, accountType INTEGER");
+
+        public static long InsertShppingMethod(string Name, string Address, string Company)
+        {
+            var cmd = new SQLiteCommand(Connection);
+            cmd.CommandText = $"INSERT INTO {ShippingTable}(name, address, company) " +
+                $"VALUES(@b, @c, @d)";
+
+            cmd.Parameters.AddWithValue("b", Name);
+            cmd.Parameters.AddWithValue("c", Address);
+            cmd.Parameters.AddWithValue("d", Company);
+
+
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+
+            string sql = "SELECT last_insert_rowid()";
+            cmd = new SQLiteCommand(sql, Connection);
+
+            return (long)cmd.ExecuteScalar();
+        }
 
         public static long InsertAddOn(string Name, string Description, string Specs, double Price, string Manufacturer)
         {
@@ -133,6 +154,7 @@ namespace Camera_Rental_System.Database
 
             string sql = "SELECT last_insert_rowid()";
             cmd = new SQLiteCommand(sql, Connection);
+            cmd.Dispose();
 
             return (long)cmd.ExecuteScalar();
         }
@@ -161,9 +183,62 @@ namespace Camera_Rental_System.Database
 
 
         }
-        public static object GetAddOns()
+        public static bool AddRentalOrder(string cameraName, DateTime rentedOn, double paid)
         {
+            var cmd = new SQLiteCommand(Connection);
+            cmd.CommandText = $"INSERT INTO {RentalOrderTable}(cameraType, rentedOn, amountPaid) " +
+                $"VALUES(@b, @c, @d)";
 
+            cmd.Parameters.AddWithValue("b", cameraName);
+            cmd.Parameters.AddWithValue("c", rentedOn);
+            cmd.Parameters.AddWithValue("d", paid);
+
+
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+
+            return true;
+        }
+        public static bool AddClient(long id, string name, string address, string pob)
+        {
+            var cmd = new SQLiteCommand(Connection);
+            cmd.CommandText = $"INSERT INTO {ClientTable}(id, name, address, proofOfBilling) " +
+                $"VALUES(@b, @c, @d, @e)";
+
+            cmd.Parameters.AddWithValue("b", id);
+            cmd.Parameters.AddWithValue("c", name);
+            cmd.Parameters.AddWithValue("d", address);
+            cmd.Parameters.AddWithValue("e", pob);
+
+
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+
+            return true;
+        }
+        public static dynamic GetClients()
+        {
+            List<dynamic> addons = new List<dynamic>();
+
+            SQLiteDataReader rdr = new SQLiteCommand($"SELECT * FROM {ClientTable}",
+                Connection).ExecuteReader();
+
+            while (rdr.Read())
+                addons.Add(new
+                {
+                    Id = GetElseDefault<long>(rdr, "id"),
+                    Name = GetElseDefault<string>(rdr, "name"),
+                    Address = GetElseDefault<string>(rdr, "address"),
+                    POB = GetElseDefault<string>(rdr, "proofOfBilling"),
+                });
+
+            return addons;
+        }
+
+        public static dynamic GetAddOns()
+        {
             List<dynamic> addons = new List<dynamic>();
 
             SQLiteDataReader rdr = new SQLiteCommand($"SELECT * FROM {AddOnsTable}",
@@ -177,7 +252,7 @@ namespace Camera_Rental_System.Database
                     Description = GetElseDefault<string>(rdr, "description"),
                     Specs = GetElseDefault<string>(rdr, "specs"),
                     Price = GetElseDefault<double>(rdr, "price"),
-                    Manufacturer = GetElseDefault<string>(rdr, "manufacturer")  
+                    Manufacturer = GetElseDefault<string>(rdr, "manufacturer")
                 });
 
             return addons;
@@ -208,10 +283,11 @@ namespace Camera_Rental_System.Database
             }
             return false;
         }
-        public static IEnumerable<(string Name, string Password, long AccountType)> GetAccounts()
+        public static IEnumerable<(string Name, string Password, long AccountType, long Id)> GetAccounts()
         {
 
-            List<(string Name, string Password, long AccountType)> accounts = new List<(string Name, string Password, long AccountType)>();
+            List<(string Name, string Password, long AccountType, long Id)> accounts = new List<(string Name, string Password,
+                long AccountType, long Id)>();
 
             SQLiteDataReader rdr = new SQLiteCommand($"SELECT * FROM {AccountsTable}",
                 Connection).ExecuteReader();
@@ -220,10 +296,11 @@ namespace Camera_Rental_System.Database
                 accounts.Add(
                     (GetElseDefault<string>(rdr, "name"),
                     GetElseDefault<string>(rdr, "password"),
-                    (GetElseDefault<long>(rdr, "accountType"))));
+                    GetElseDefault<long>(rdr, "accountType"),
+                    GetElseDefault<long>(rdr, "id")
+                    ));
 
             return accounts;
-
 
         }
         public static T GetElseDefault<T>(SQLiteDataReader reader, string name)

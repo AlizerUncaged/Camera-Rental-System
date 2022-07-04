@@ -16,23 +16,24 @@ using System.Windows.Shapes;
 namespace Camera_Rental_System.Pages
 {
     /// <summary>
-    /// Interaction logic for CameraDirectory.xaml
+    /// Interaction logic for AskClient.xaml
     /// </summary>
-    public partial class CameraDirectory : UserControl, IPage
+    public partial class AskClient : UserControl, IPage
     {
-        public CameraDirectory(long account)
+        public AskClient(long id)
         {
             InitializeComponent();
-
-            dynamic cameras = Database.DatabaseConnection.GetCameras();
-            foreach (var camera in cameras)
-            {
-                var cam = new CameraPanel(camera.Id, camera.Name, camera.Price);
-                cam.MouseLeftButtonDown += (s, e) => PageChanged?.Invoke(this, new HomeProducts(account, camera.Id, false));
-                Cameras.Children.Add(cam);
-            }
+            Id = id;
         }
 
+        public long Id { get; }
+
         public event EventHandler<IPage> PageChanged;
+
+        private void SetInformation(object sender, RoutedEventArgs e)
+        {
+
+            Database.DatabaseConnection.AddClient(Id, Name.Text, Address.Text, POB.Text);
+        }
     }
 }

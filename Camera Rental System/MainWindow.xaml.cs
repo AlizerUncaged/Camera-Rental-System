@@ -42,11 +42,20 @@ namespace Camera_Rental_System
                     if (!Data.ContainsKey(l.Name))
                         Data.Add(l.Name, l.Data);
 
-
                     if (l.Name is "loggedIn")
+                    {
+                        var accId = long.Parse(Data["accountId"].ToString());
+
+                        SetPage(new Pages.CameraDirectory(accId));
+
+                        if (!(Database.DatabaseConnection.GetClients() as IEnumerable<dynamic>).Where(x => (long)x.Id == accId).Any())
+                            SetPage(new Pages.AskClient(accId));
+
+
                         LeftButtons.Visibility =
                             l.Data is bool loggedIn &&
                             loggedIn ? Visibility.Visible : Visibility.Collapsed;
+                    }
                     if (l.Name is "isAdmin")
                         AddItems.Visibility =
                         l.Data is bool isAdmin && isAdmin ? Visibility.Visible : Visibility.Collapsed;
@@ -68,12 +77,30 @@ namespace Camera_Rental_System
         }
 
         private void ViewHome(object sender, MouseButtonEventArgs e) =>
-            SetPage(new Pages.HomeProducts());
+            SetPage(new Pages.HomeProducts(long.Parse(Data["accountId"].ToString())));
 
         private void ViewDirectory(object sender, MouseButtonEventArgs e) =>
-            SetPage(new Pages.CameraDirectory());
+            SetPage(new Pages.CameraDirectory(long.Parse(Data["accountId"].ToString())));
 
-        private void AddItemsClicked(object sender, RoutedEventArgs e) =>
-            SetPage(new Pages.AddItems());
+        private void AddItemsClicked(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                Button image = sender as Button;
+                ContextMenu contextMenu = image.ContextMenu;
+                contextMenu.PlacementTarget = image;
+                contextMenu.IsOpen = true;
+                e.Handled = true;
+            }
+        }
+
+        private void AddCamerasClicked(object sender, RoutedEventArgs e)
+        {
+            if (Data.TryGetValue("isAdmin", out var isAdmin)
+                && isAdmin is bool isAdminBool
+                && isAdminBool)
+
+                SetPage(new Pages.AddItems());
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace Camera_Rental_System.Pages
     /// </summary>
     public partial class CameraPanel : UserControl, ICameraPanel
     {
-        private readonly double price;
+        public readonly double price;
 
         public CameraPanel(long id, string name, double price)
         {
