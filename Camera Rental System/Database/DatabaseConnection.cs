@@ -68,7 +68,7 @@ namespace Camera_Rental_System.Database
                  "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                  "cameraType TEXT, " +
                  "rentedOn DATE, " +
-                 "amountPaid REAL") &&
+                 "amountPaid REAL, shipping TEXT") &&
 
             CreateTableIfNotExist(RentalDetailsTable,
                  "fee REAL, " +
@@ -88,6 +88,24 @@ namespace Camera_Rental_System.Database
 
             CreateTableIfNotExist(AccountsTable,
                  "id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, password TEXT, accountType INTEGER");
+
+        public static dynamic GetShippingServices()
+        {
+            List<dynamic> addons = new List<dynamic>();
+
+            SQLiteDataReader rdr = new SQLiteCommand($"SELECT * FROM {ShippingTable}",
+                Connection).ExecuteReader();
+
+            while (rdr.Read())
+                addons.Add(new
+                {
+                    Name = GetElseDefault<string>(rdr, "name"),
+                    Address = GetElseDefault<string>(rdr, "address"),
+                    Company = GetElseDefault<string>(rdr, "company"),
+                });
+
+            return addons;
+        }
 
         public static long InsertShppingMethod(string Name, string Address, string Company)
         {
@@ -183,15 +201,16 @@ namespace Camera_Rental_System.Database
 
 
         }
-        public static bool AddRentalOrder(string cameraName, DateTime rentedOn, double paid)
+        public static bool AddRentalOrder(string cameraName, DateTime rentedOn, double paid, string shipping)
         {
             var cmd = new SQLiteCommand(Connection);
-            cmd.CommandText = $"INSERT INTO {RentalOrderTable}(cameraType, rentedOn, amountPaid) " +
-                $"VALUES(@b, @c, @d)";
+            cmd.CommandText = $"INSERT INTO {RentalOrderTable}(cameraType, rentedOn, amountPaid, shipping) " +
+                $"VALUES(@b, @c, @d, @e)";
 
             cmd.Parameters.AddWithValue("b", cameraName);
             cmd.Parameters.AddWithValue("c", rentedOn);
             cmd.Parameters.AddWithValue("d", paid);
+            cmd.Parameters.AddWithValue("e", shipping);
 
 
             cmd.Prepare();
@@ -218,6 +237,7 @@ namespace Camera_Rental_System.Database
 
             return true;
         }
+
         public static dynamic GetClients()
         {
             List<dynamic> addons = new List<dynamic>();

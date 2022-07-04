@@ -20,6 +20,9 @@
             <TextBlock x:Name="TotalPrice" TextWrapping="Wrap" Margin="0,0,0,15" FontWeight="Bold" FontSize="14"/>
             <TextBlock x:Name="Address" TextWrapping="Wrap" Margin="0,0,0,15"/>
             <TextBox x:Name="Message" materialDesign:TextFieldAssist.UnderlineBrush="#FF2B2B2B" materialDesign:HintAssist.Foreground="#FF2B2B2B" materialDesign:HintAssist.Hint="Message" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" FontSize="14" FontWeight="Bold" Margin="0,0,0,15" CaretBrush="#FF2B2B2B" SelectionBrush="#FF2B2B2B" BorderBrush="#FF2B2B2B"/>
+            <StackPanel Margin="0,0,0,15">
+                <ComboBox materialDesign:TextFieldAssist.UnderlineBrush="#FF2B2B2B" materialDesign:HintAssist.Foreground="#FF2B2B2B" x:Name="_ShippingServices_" materialDesign:HintAssist.Hint="Shipping Service" FontSize="14" FontWeight="Bold" BorderBrush="#FF2B2B2B"></ComboBox>
+            </StackPanel>
             <TextBlock Text="Payment Type" FontSize="16" FontWeight="Bold" Margin="0,0,15,15" Opacity="0.75" HorizontalAlignment="Left" />
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,15">

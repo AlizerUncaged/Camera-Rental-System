@@ -33,6 +33,14 @@ namespace Camera_Rental_System.Pages
                 totalPrice += item.Price;
             }
 
+            _ShippingServices_.ItemsSource =
+                (Database.DatabaseConnection.GetShippingServices() as IEnumerable<dynamic>).Select(x => x.Name);
+
+            if (_ShippingServices_.Items.Count >= 1)
+            {
+                _ShippingServices_.SelectedIndex = 0;
+            }
+
             TotalPrice.Text = $"Total: ₱{totalPrice}";
 
             var account = (Database.DatabaseConnection.GetClients() as IEnumerable<dynamic>).FirstOrDefault(x => x.Id == accountId);
@@ -47,7 +55,7 @@ namespace Camera_Rental_System.Pages
         {
             foreach (var item in Items)
             {
-                Database.DatabaseConnection.AddRentalOrder(item.Name, DateTime.Now, item.Price);
+                Database.DatabaseConnection.AddRentalOrder(item.Name, DateTime.Now, item.Price, _ShippingServices_.SelectedItem as string);
             }
 
             Success.IsOpen = true;

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Camera_Rental_System.Pages"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="Camera_Rental_System.Pages.AddShipping"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Background="White">
+             d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
 
         <StackPanel MaxWidth="350" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="244.5,14.5">

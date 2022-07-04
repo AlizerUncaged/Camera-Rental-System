@@ -102,5 +102,10 @@ namespace Camera_Rental_System
 
                 SetPage(new Pages.AddItems());
         }
+
+        private void AddShippingMethod(object sender, RoutedEventArgs e)
+        {
+            SetPage(new Pages.AddShipping());
+        }
     }
 }

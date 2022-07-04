@@ -42,7 +42,7 @@
             <Button.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Add Items" Click="AddCamerasClicked"/>
-                    <MenuItem Header="Add Freight Handler" />
+                    <MenuItem Header="Add Freight Handler" Click="AddShippingMethod"/>
                 </ContextMenu>
             </Button.ContextMenu>
         </Button>
