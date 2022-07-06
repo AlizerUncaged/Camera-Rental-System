@@ -38,7 +38,7 @@ namespace Camera_Rental_System.Pages
 
             foreach (var order in orders)
             {
-                var j = new UserOrOrder(order.Type, $"{order.AmountPaid}", "Check Details", order.Name, order.Shipping, order.Address, !isAdmin);
+                var j = new UserOrOrder(isAdmin ? order.Type :order.Name , $"{order.AmountPaid}", "Check Details", order.Name, order.Shipping, order.Address, !isAdmin);
                 j.Transmission += J_Transmission;
                 CustomerOrders.Children.Add(j);
             }
