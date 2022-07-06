@@ -58,9 +58,12 @@ namespace Camera_Rental_System.Pages
 
         private void ItemOrderClicked(object sender, RoutedEventArgs e)
         {
+            var account = (Database.DatabaseConnection.GetClients() as IEnumerable<dynamic>).FirstOrDefault(x => x.Id == accountId);
             foreach (var item in Items)
             {
-                Database.DatabaseConnection.AddRentalOrder(item.Name, DateTime.Now, item.Price, _ShippingServices_.SelectedItem as string);
+                Database.DatabaseConnection
+                    .AddRentalOrder(item.Name, DateTime.Now, item.Price, _ShippingServices_.SelectedItem as string,
+                    account.Name, account.Address);
             }
 
             Success.IsOpen = true;

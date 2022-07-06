@@ -68,7 +68,7 @@ namespace Camera_Rental_System.Database
                  "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                  "cameraType TEXT, " +
                  "rentedOn DATE, " +
-                 "amountPaid REAL, shipping TEXT") &&
+                 "amountPaid REAL, shipping TEXT, customerName TEXT, address TEXT") &&
 
             CreateTableIfNotExist(RentalDetailsTable,
                  "fee REAL, " +
@@ -202,16 +202,41 @@ namespace Camera_Rental_System.Database
 
 
         }
-        public static bool AddRentalOrder(string cameraName, DateTime rentedOn, double paid, string shipping)
+        public static object GetOrders()
+        {
+
+            List<dynamic> cameras = new List<dynamic>();
+
+            SQLiteDataReader rdr = new SQLiteCommand($"SELECT * FROM {RentalOrderTable}",
+                Connection).ExecuteReader();
+
+            while (rdr.Read())
+                cameras.Add(new
+                {
+                    Type = GetElseDefault<string>(rdr, "cameraType"),
+                    RentedOn = GetElseDefault<DateTime>(rdr, "rentedOn"),
+                    AmountPaid = GetElseDefault<double>(rdr, "amountPaid"),
+                    Shipping = GetElseDefault<string>(rdr, "shipping"),
+                    Name = GetElseDefault<string>(rdr, "customerName"),
+                    Address = GetElseDefault<string>(rdr, "address"),
+                });
+
+            return cameras;
+
+
+        }
+        public static bool AddRentalOrder(string cameraName, DateTime rentedOn, double paid, string shipping, string name, string address)
         {
             var cmd = new SQLiteCommand(Connection);
-            cmd.CommandText = $"INSERT INTO {RentalOrderTable}(cameraType, rentedOn, amountPaid, shipping) " +
-                $"VALUES(@b, @c, @d, @e)";
+            cmd.CommandText = $"INSERT INTO {RentalOrderTable}(cameraType, rentedOn, amountPaid, shipping, customerName, address) " +
+                $"VALUES(@b, @c, @d, @e, @l, @k)";
 
             cmd.Parameters.AddWithValue("b", cameraName);
             cmd.Parameters.AddWithValue("c", rentedOn);
             cmd.Parameters.AddWithValue("d", paid);
             cmd.Parameters.AddWithValue("e", shipping);
+            cmd.Parameters.AddWithValue("l", name);
+            cmd.Parameters.AddWithValue("k", address);
 
 
             cmd.Prepare();

@@ -25,13 +25,20 @@
                 <Grid MouseLeftButtonDown="ViewDirectory" Height="35" Width="34" Background="#00000000" Margin="0,0,0,15">
                     <materialDesign:PackIcon Kind="StoreOutline" HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Height="20"/>
                 </Grid>
-                <Grid MouseLeftButtonDown="AddCamerasClicked" Height="35" Width="34" Background="#00000000" Visibility="Collapsed">
+                <Grid MouseLeftButtonDown="ViewOrders" Height="35" Width="34" Background="#00000000">
                     <materialDesign:PackIcon Kind="AboutOutline" HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Height="20"/>
                 </Grid>
-
             </StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,15,0,0">
                 <Image Source="/Resources/Logo.png" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="30"/>
+            </StackPanel>
+            <StackPanel  Orientation="Vertical" VerticalAlignment="Bottom">
+                <Grid x:Name="asdasdasd" MouseLeftButtonDown="LogOut" Margin="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="50" Height="50" Background="#00000000">
+                    <materialDesign:PackIcon Kind="Logout" VerticalAlignment="Center" HorizontalAlignment="Center" Width="20" Height="20" />
+                </Grid>
+                <Grid MouseLeftButtonDown="Close" Margin="5,0" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="50" Height="50" Background="#00000000">
+                    <materialDesign:PackIcon Kind="Close" VerticalAlignment="Center" HorizontalAlignment="Center" Width="20" Height="20" />
+                </Grid>
             </StackPanel>
         </Grid>
         <Grid VerticalAlignment="Top"/>

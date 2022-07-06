@@ -21,13 +21,14 @@ namespace Camera_Rental_System
     public partial class MainWindow : Window
     {
         public Dictionary<string, object> Data = new Dictionary<string, object>();
-
+        bool admin = false;
         public MainWindow()
         {
             Database.DatabaseConnection.Connect();
             Database.DatabaseConnection.InitializeTables();
             InitializeComponent();
             SetPage(new Pages.Register());
+            asdasdasd.Visibility = Visibility.Collapsed;
 
         }
         private void SetPage(Pages.IPage e)
@@ -44,6 +45,7 @@ namespace Camera_Rental_System
 
                     if (l.Name is "loggedIn")
                     {
+                        asdasdasd.Visibility = Visibility.Visible;
                         var accId = long.Parse(Data["accountId"].ToString());
 
                         SetPage(new Pages.CameraDirectory(accId));
@@ -59,8 +61,11 @@ namespace Camera_Rental_System
                             loggedIn ? Visibility.Visible : Visibility.Collapsed;
                     }
                     if (l.Name is "isAdmin")
+                    {
+                        admin = true;
                         AddItems.Visibility =
                         l.Data is bool isAdmin && isAdmin ? Visibility.Visible : Visibility.Collapsed;
+                    }
 
 
                 };
@@ -110,9 +115,19 @@ namespace Camera_Rental_System
             SetPage(new Pages.AddShipping());
         }
 
-        private void AddCamerasClicked(object sender, MouseButtonEventArgs e)
+        private void ViewOrders(object sender, MouseButtonEventArgs e)
         {
+            SetPage(new Pages.ViewOrders(admin));
+        }
 
+        private void LogOut(object sender, MouseButtonEventArgs e)
+        {
+            SetPage(new Pages.Register());
+        }
+
+        private void Close(object sender, MouseButtonEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }
