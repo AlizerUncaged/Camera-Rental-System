@@ -34,6 +34,7 @@ namespace Camera_Rental_System.Pages
         {
 
             Database.DatabaseConnection.AddClient(Id, Name.Text, Address.Text, POB.Text);
+            PageChanged?.Invoke(this, new HomeProducts(Id));
         }
     }
 }
