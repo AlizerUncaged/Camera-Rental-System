@@ -42,6 +42,7 @@ namespace Camera_Rental_System
                 {
                     if (!Data.ContainsKey(l.Name))
                         Data.Add(l.Name, l.Data);
+else Data[l.Name] = l.Data;
 
                     if (l.Name is "loggedIn")
                     {
