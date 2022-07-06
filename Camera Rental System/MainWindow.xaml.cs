@@ -49,7 +49,12 @@ namespace Camera_Rental_System
                         SetPage(new Pages.CameraDirectory(accId));
 
                         if (!(Database.DatabaseConnection.GetClients() as IEnumerable<dynamic>).Where(x => (long)x.Id == accId).Any())
-                            SetPage(new Pages.AskClient(accId));
+                        {
+                            if (!(Database.DatabaseConnection.GetCameras() as IEnumerable<dynamic>).Any())
+                                SetPage(new Pages.CameraDirectory(accId));
+                            else
+                                SetPage(new Pages.AskClient(accId));
+                        }
 
 
                         LeftButtons.Visibility =
