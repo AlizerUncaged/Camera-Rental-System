@@ -27,7 +27,7 @@
                 <RadioButton x:Name="IsCam" IsChecked="True" FontWeight="Bold" FontSize="14" Content="Camera" Margin="0,0,15,0" BorderBrush="#FF2B2B2B" Background="#FF2B2B2B"></RadioButton>
                 <RadioButton x:Name="IsAddOn" FontWeight="Bold" FontSize="14" Content="Add-On" Margin="0,0,15,0" BorderBrush="#FF2B2B2B" Background="#FF2B2B2B"></RadioButton>
             </StackPanel>
-            <Button Click="AddItem" BorderBrush="{x:Null}" Background="#FFEAEAEC" Content="Add Item"></Button>
+            <Button x:Name="additembutton" Click="AddItem" BorderBrush="{x:Null}" Background="#FFEAEAEC" Content="Add Item"></Button>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -69,6 +69,7 @@ namespace Camera_Rental_System.Pages
 
                 var cameraImage = $"./{folder}/{lastInsert}.png";
                 File.Copy(Filename, cameraImage);
+                additembutton.Content = "Add More";
             }
         }
     }
