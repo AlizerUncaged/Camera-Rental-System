@@ -117,7 +117,7 @@ namespace Camera_Rental_System
 
         private void ViewOrders(object sender, MouseButtonEventArgs e)
         {
-            SetPage(new Pages.ViewOrders(admin));
+            SetPage(new Pages.ViewOrders(admin, long.Parse(Data["accountId"].ToString())));
         }
 
         private void LogOut(object sender, MouseButtonEventArgs e)

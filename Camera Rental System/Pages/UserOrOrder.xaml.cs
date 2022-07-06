@@ -26,9 +26,12 @@ namespace Camera_Rental_System.Pages
         private readonly string shipping;
         private readonly string address;
 
-        public UserOrOrder(string camname, string paidamount, string buttontext, string customerName, string shipping, string address)
+        public UserOrOrder(string camname, string paidamount, string buttontext, string customerName, string shipping, string address, bool hideButton)
         {
             InitializeComponent();
+
+            if (hideButton) jjjjj.Visibility = Visibility.Collapsed;
+
             namm.Text = customerName; namm2.Text = camname;
             jjjjj.Content = buttontext;
             this.camname = camname;

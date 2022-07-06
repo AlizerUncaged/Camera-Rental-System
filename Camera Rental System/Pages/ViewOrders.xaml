@@ -11,7 +11,7 @@
         <Grid  Margin="60,0,0,0" >
             <ScrollViewer Margin="15,15,15,0">
                 <StackPanel>
-                    <TextBlock Text="View Orders" FontSize="16" FontWeight="Bold" Margin="0,0,15,15" Opacity="0.75" HorizontalAlignment="Left" />
+                    <TextBlock x:Name="myorders" Text="View Orders" FontSize="16" FontWeight="Bold" Margin="0,0,15,15" Opacity="0.75" HorizontalAlignment="Left" />
                     <StackPanel x:Name="CustomerOrders"/>
                 </StackPanel>
             </ScrollViewer>

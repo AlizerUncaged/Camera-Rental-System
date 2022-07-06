@@ -20,20 +20,29 @@ namespace Camera_Rental_System.Pages
     /// </summary>
     public partial class ViewOrders : UserControl, IPage
     {
-        public ViewOrders(bool isAdmin)
+        public ViewOrders(bool isAdmin, long accid)
         {
             InitializeComponent();
+
             if (isAdmin)
             {
-                var orders = Database.DatabaseConnection.GetOrders() as IEnumerable<dynamic>;
-                foreach (var order in orders)
-                {
-                    var j =
-                        new UserOrOrder(order.Type, $"{order.AmountPaid}", "Check Details", order.Name, order.Shipping, order.Address);
-                    j.Transmission += J_Transmission;
-                    CustomerOrders.Children.Add(j);
-                }
+                myorders.Text = "Your Orders";
             }
+
+            var orders = Database.DatabaseConnection.GetOrders() as IEnumerable<dynamic>;
+
+            var account = (Database.DatabaseConnection.GetClients() as IEnumerable<dynamic>).FirstOrDefault(x => x.Id == accid);
+
+            if (isAdmin)
+                orders = orders.Where(x => x.Name == account.Name);
+
+            foreach (var order in orders)
+            {
+                var j = new UserOrOrder(order.Type, $"{order.AmountPaid}", "Check Details", order.Name, order.Shipping, order.Address, !isAdmin);
+                j.Transmission += J_Transmission;
+                CustomerOrders.Children.Add(j);
+            }
+
         }
 
         private void J_Transmission(object sender, string e)
