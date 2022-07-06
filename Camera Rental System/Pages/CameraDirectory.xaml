@@ -8,6 +8,8 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
+        <TextBlock x:Name="nocams" Text="No cameras on the database, please add one using an administrator account. " FontSize="16" FontWeight="Bold" Margin="0,15,15,0" Opacity="0.75" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed" />
+
         <ScrollViewer Focusable="False" Margin="60,0,0,0" VerticalScrollBarVisibility="Hidden">
             <WrapPanel x:Name="Cameras">
 

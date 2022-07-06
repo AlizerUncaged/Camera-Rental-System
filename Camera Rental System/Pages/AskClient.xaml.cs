@@ -32,7 +32,6 @@ namespace Camera_Rental_System.Pages
 
         private void SetInformation(object sender, RoutedEventArgs e)
         {
-
             Database.DatabaseConnection.AddClient(Id, Name.Text, Address.Text, POB.Text);
             PageChanged?.Invoke(this, new HomeProducts(Id));
         }

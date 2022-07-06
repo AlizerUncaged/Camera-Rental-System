@@ -46,11 +46,20 @@ namespace Camera_Rental_System.Pages
                 (Database.DatabaseConnection.GetCameras() as IEnumerable<dynamic>).FirstOrDefault(x => x.Id == currentId) :
                 (Database.DatabaseConnection.GetCameras() as IEnumerable<dynamic>).LastOrDefault();
 
-            ProductName = cam.Name;
-            ProductDescription = cam.Description;
-            ProductID = cam.Id;
-            ProductSpecs = cam.Specs;
+            if ((Database.DatabaseConnection.GetCameras() as IEnumerable<dynamic>).Any())
+            {
+                ProductName = cam.Name;
+                ProductDescription = cam.Description;
+                ProductID = cam.Id;
+                ProductSpecs = cam.Specs;
+            }
             InitializeComponent();
+
+            if ((Database.DatabaseConnection.GetCameras() as IEnumerable<dynamic>).Count() <= 0)
+            {
+                nocams.Visibility = Visibility.Visible;
+                return;
+            }
 
             camPrice = cam.Price;
             price = cam.Price;
@@ -136,7 +145,7 @@ namespace Camera_Rental_System.Pages
             foreach (var child in AddOns.Children)
                 if (child is AddOnPanel addOnsPanel && addOnsPanel.IsChosen)
                     items.Add(new { Name = addOnsPanel.AddOnName, Price = addOnsPanel.PriceValue });
-            
+
 
             PageChanged?.Invoke(this, new OrderItem(items, account));
         }

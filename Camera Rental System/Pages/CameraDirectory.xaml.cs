@@ -24,6 +24,12 @@ namespace Camera_Rental_System.Pages
         {
             InitializeComponent();
 
+            if ((Database.DatabaseConnection.GetCameras() as IEnumerable<dynamic>).Count() <= 0)
+            {
+                nocams.Visibility = Visibility.Visible;
+                return;
+            }
+
             dynamic cameras = Database.DatabaseConnection.GetCameras();
             foreach (var camera in cameras)
             {
