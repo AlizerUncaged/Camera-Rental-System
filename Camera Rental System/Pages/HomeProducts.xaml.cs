@@ -114,6 +114,8 @@ namespace Camera_Rental_System.Pages
                     );
             }
 
+            ProductImage.Source = new BitmapImage(new Uri($"pack://siteoforigin:,,,/Cameras/{ProductID}.png"));
+
             this.account = account;
         }
 
@@ -128,7 +130,6 @@ namespace Camera_Rental_System.Pages
         public string ProductSpecs { get; }
         public string ProductDescription { get; }
 
-        public ImageSource CameraImage => new BitmapImage(new Uri($"pack://siteoforigin:,,,/Cameras/{ProductID}.png"));
 
         public event EventHandler<IPage> PageChanged;
 
