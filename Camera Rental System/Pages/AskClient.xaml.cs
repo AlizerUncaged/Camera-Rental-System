@@ -31,9 +31,13 @@ namespace Camera_Rental_System.Pages
         public event EventHandler<IPage> PageChanged;
 
         private void SetInformation(object sender, RoutedEventArgs e)
-        {
+        {//
             Database.DatabaseConnection.AddClient(Id, Name.Text, Address.Text, POB.Text);
-            PageChanged?.Invoke(this, new HomeProducts(Id));
+
+            if (!(Database.DatabaseConnection.GetCameras() as IEnumerable<dynamic>).Any())
+                PageChanged?.Invoke(this, new Pages.CameraDirectory(Id));
+            else
+                PageChanged?.Invoke(this, new HomeProducts(Id));
         }
     }
 }

@@ -34,6 +34,7 @@ namespace Camera_Rental_System.Pages
             this.DataContext = this;
 
             InitializeComponent();
+            CamImage.Source = new BitmapImage(new Uri($"pack://siteoforigin:,,,/Cameras/{ProductID}.png"));
         }
 
         public string CameraName { get; }
@@ -41,7 +42,7 @@ namespace Camera_Rental_System.Pages
 
         public long ProductID { get; }
 
-        public ImageSource CameraImage => new BitmapImage(new Uri($"pack://siteoforigin:,,,/Cameras/{ProductID}.png"));
+        public ImageSource CameraImage => throw new NotImplementedException();
 
         public event EventHandler Clicked;
 

@@ -11,7 +11,7 @@
     </UserControl.Effect>
     <Border  ClipToBounds="True" CornerRadius="7" Background="#FFEAEAEC">
         <DockPanel Margin="15">
-            <Image DockPanel.Dock="Top" VerticalAlignment="Top" Source="{Binding CameraImage}" Height="100"  Margin="0,0,0,15">
+            <Image x:Name="CamImage" DockPanel.Dock="Top" VerticalAlignment="Top"  Height="100"  Margin="0,0,0,15">
 
             </Image>
             <StackPanel>

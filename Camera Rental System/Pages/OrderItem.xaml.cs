@@ -44,6 +44,11 @@ namespace Camera_Rental_System.Pages
             TotalPrice.Text = $"Total: ₱{totalPrice}";
 
             var account = (Database.DatabaseConnection.GetClients() as IEnumerable<dynamic>).FirstOrDefault(x => x.Id == accountId);
+            if (account is null)
+            {
+                PageChanged?.Invoke(this, new AskClient(accountId));
+                return;
+            }
             Address.Text = $"Delivered To: {account.Address}";
         }
 

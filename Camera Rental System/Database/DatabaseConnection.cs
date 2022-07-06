@@ -172,9 +172,10 @@ namespace Camera_Rental_System.Database
 
             string sql = "SELECT last_insert_rowid()";
             cmd = new SQLiteCommand(sql, Connection);
+            var k = (long)cmd.ExecuteScalar();
             cmd.Dispose();
 
-            return (long)cmd.ExecuteScalar();
+            return k;
         }
 
         public static object GetCameras()

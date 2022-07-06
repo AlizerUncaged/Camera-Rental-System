@@ -50,10 +50,7 @@ namespace Camera_Rental_System
 
                         if (!(Database.DatabaseConnection.GetClients() as IEnumerable<dynamic>).Where(x => (long)x.Id == accId).Any())
                         {
-                            if (!(Database.DatabaseConnection.GetCameras() as IEnumerable<dynamic>).Any())
-                                SetPage(new Pages.CameraDirectory(accId));
-                            else
-                                SetPage(new Pages.AskClient(accId));
+                            SetPage(new Pages.AskClient(accId));
                         }
 
 
@@ -111,6 +108,11 @@ namespace Camera_Rental_System
         private void AddShippingMethod(object sender, RoutedEventArgs e)
         {
             SetPage(new Pages.AddShipping());
+        }
+
+        private void AddCamerasClicked(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }
