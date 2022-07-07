@@ -24,7 +24,7 @@ namespace Camera_Rental_System.Pages
         {
             InitializeComponent();
 
-            if (isAdmin)
+            if (!isAdmin)
             {
                 myorders.Text = "Your Orders";
             }
@@ -33,7 +33,7 @@ namespace Camera_Rental_System.Pages
 
             var account = (Database.DatabaseConnection.GetClients() as IEnumerable<dynamic>).FirstOrDefault(x => x.Id == accid);
 
-            if (isAdmin)
+            if (!isAdmin)
                 orders = orders.Where(x => x.Name == account.Name);
 
             foreach (var order in orders)
